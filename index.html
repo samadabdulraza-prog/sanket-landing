@@ -4,489 +4,745 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SANKET — Clarity before every trade</title>
-<meta name="description" content="The decision-making layer for Indian retail investors. AI-powered trade signals, behavioural insights, and Zerodha integration in one place."/>
+<meta name="description" content="Stop guessing. Sanket gives Indian retail investors AI-powered stock signals, live market data, and broker integration — so every trade has a reason behind it."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:    #080808;
-  --s1:    #0f0f0f;
-  --s2:    #161616;
-  --b1:    #222222;
-  --b2:    #333333;
-  --text:  #f0f0f0;
-  --text2: #888888;
-  --muted: #444444;
-  --green: #00c805;
-  --red:   #ff5000;
-  --mono:  'Space Mono', monospace;
-  --serif: 'Instrument Serif', serif;
-  --sans:  'Geist', sans-serif;
+  --black:   #0a0a0a;
+  --ink:     #1a1a1a;
+  --gray:    #6b6b6b;
+  --light:   #f4f3f0;
+  --white:   #ffffff;
+  --border:  #e8e6e1;
+  --green:   #00a651;
+  --red:     #e03131;
+  --accent:  #0a0a0a;
+  --serif:   'DM Serif Display', Georgia, serif;
+  --sans:    'DM Sans', sans-serif;
+  --mono:    'Space Mono', monospace;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
 html { scroll-behavior: smooth; }
+
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--white);
+  color: var(--ink);
   font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ── NAV ── */
 nav {
-  position: fixed; top:0; left:0; right:0; z-index:100;
-  padding: 20px 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(8,8,8,0.9);
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  animation: fadeDown 0.6s ease both;
+  border-bottom: 1px solid var(--border);
+  padding: 0 5%;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
 }
 .nav-logo {
   font-family: var(--mono);
-  font-size: 14px; font-weight: 700;
-  letter-spacing: 0.22em;
-  color: var(--text);
-  display: flex; align-items: center; gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--black);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
 }
 .nav-logo-dot {
   width: 6px; height: 6px;
-  border-radius: 50%;
   background: var(--green);
-  animation: pulse 2s infinite;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
 }
-.nav-links { display:flex; align-items:center; gap:32px; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+  list-style: none;
+}
 .nav-links a {
-  font-size: 13px; font-weight: 500;
-  color: var(--text2); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  color: var(--gray); text-decoration: none;
   transition: color 0.15s;
 }
-.nav-links a:hover { color: var(--text); }
+.nav-links a:hover { color: var(--black); }
 .nav-cta {
-  padding: 9px 20px;
-  background: var(--text);
-  color: #000;
-  border-radius: 7px;
-  font-size: 13px; font-weight: 700;
-  text-decoration: none;
-  transition: all 0.15s;
+  background: var(--black); color: var(--white) !important;
+  padding: 9px 20px; border-radius: 6px;
+  font-size: 13px !important; font-weight: 600 !important;
+  transition: background 0.15s !important;
 }
-.nav-cta:hover { background: #ddd; }
+.nav-cta:hover { background: #333 !important; color: var(--white) !important; }
 
 /* ── HERO ── */
 .hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 24px 80px;
+  padding: 160px 5% 100px;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
-  overflow: hidden;
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,200,5,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(255,80,0,0.04) 0%, transparent 50%);
-  pointer-events: none;
-}
-.hero-badge {
+.hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px;
-  background: var(--s2);
-  border: 1px solid var(--b1);
-  border-radius: 40px;
   font-family: var(--mono);
-  font-size: 11px; color: var(--text2);
-  margin-bottom: 32px;
-  animation: fadeUp 0.7s ease 0.1s both;
-  letter-spacing: 0.05em;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--light);
 }
-.hero-badge-dot { width:6px; height:6px; border-radius:50%; background:var(--green); }
-.hero-headline {
+.hero-eyebrow-dot {
+  width: 5px; height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+}
+.hero h1 {
   font-family: var(--serif);
-  font-size: clamp(52px, 8vw, 96px);
-  font-weight: 400;
-  line-height: 1.05;
+  font-size: clamp(44px, 6vw, 80px);
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  color: var(--text);
-  max-width: 900px;
-  margin-bottom: 12px;
-  animation: fadeUp 0.7s ease 0.2s both;
+  color: var(--black);
+  max-width: 800px;
+  margin-bottom: 28px;
 }
-.hero-headline em {
+.hero h1 em {
   font-style: italic;
-  color: var(--text2);
+  color: var(--gray);
 }
 .hero-sub {
-  font-size: 18px; font-weight: 400;
-  color: var(--text2);
-  max-width: 480px;
-  line-height: 1.65;
-  margin-bottom: 40px;
-  animation: fadeUp 0.7s ease 0.3s both;
+  font-size: 18px;
+  color: var(--gray);
+  max-width: 540px;
+  line-height: 1.7;
+  margin-bottom: 44px;
+  font-weight: 400;
 }
 .hero-actions {
-  display: flex; align-items: center; gap: 14px;
-  animation: fadeUp 0.7s ease 0.4s both;
-  margin-bottom: 60px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
 }
 .btn-primary {
+  background: var(--black);
+  color: var(--white);
   padding: 14px 28px;
-  background: var(--green);
-  color: #000;
-  border-radius: 8px;
-  font-size: 14px; font-weight: 700;
+  border-radius: 7px;
+  font-size: 14px; font-weight: 600;
   text-decoration: none;
   transition: all 0.15s;
   display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-primary:hover { background: #00e006; transform: translateY(-1px); }
-.btn-ghost {
-  padding: 14px 28px;
-  background: transparent;
-  color: var(--text2);
-  border: 1px solid var(--b2);
-  border-radius: 8px;
+.btn-primary:hover { background: #333; transform: translateY(-1px); }
+.btn-secondary {
+  color: var(--gray);
   font-size: 14px; font-weight: 500;
   text-decoration: none;
-  transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: color 0.15s;
 }
-.btn-ghost:hover { color: var(--text); border-color: var(--text2); }
+.btn-secondary:hover { color: var(--black); }
 .hero-stats {
-  display: flex; align-items: center; gap: 40px;
-  animation: fadeUp 0.7s ease 0.5s both;
+  display: flex; gap: 48px; flex-wrap: wrap;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
 }
-.hero-stat-divider { width:1px; height:32px; background: var(--b1); }
-.hero-stat-value {
-  font-family: var(--mono);
-  font-size: 22px; font-weight: 700;
-  color: var(--text);
-  display: block; margin-bottom: 4px;
+.stat-item {}
+.stat-number {
+  font-family: var(--serif);
+  font-size: 36px;
+  color: var(--black);
+  line-height: 1;
+  margin-bottom: 6px;
 }
-.hero-stat-label {
-  font-size: 12px; color: var(--text2);
+.stat-label {
+  font-size: 13px;
+  color: var(--gray);
+  font-weight: 400;
 }
 
 /* ── TICKER ── */
-.ticker-wrap {
-  width: 100%;
-  background: var(--s1);
-  border-top: 1px solid var(--b1);
-  border-bottom: 1px solid var(--b1);
-  padding: 12px 0;
+.ticker-section {
+  background: var(--black);
+  padding: 14px 0;
   overflow: hidden;
+  position: relative;
 }
-.ticker {
-  display: flex; gap: 48px;
-  animation: ticker 20s linear infinite;
+.ticker-track {
+  display: flex;
+  gap: 48px;
+  animation: ticker 30s linear infinite;
   white-space: nowrap;
 }
 .ticker-item {
+  display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
-  display: flex; align-items: center; gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
   flex-shrink: 0;
 }
-.ticker-symbol { color: var(--text); font-weight: 700; }
-.ticker-up { color: var(--green); }
-.ticker-down { color: var(--red); }
-@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
-/* ── SECTION ── */
-section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
-.section-label {
-  font-family: var(--mono);
-  font-size: 10px; font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: 16px;
-}
-.section-title {
-  font-family: var(--serif);
-  font-size: clamp(36px, 5vw, 58px);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  margin-bottom: 16px;
-}
-.section-title em { font-style: italic; color: var(--text2); }
-.section-body {
-  font-size: 16px; color: var(--text2);
-  line-height: 1.7; max-width: 580px;
+.ticker-item .sym { color: var(--white); font-weight: 700; }
+.ticker-item .up  { color: #4ade80; }
+.ticker-item .dn  { color: #f87171; }
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ── PROBLEM ── */
-.problem-section { border-top: 1px solid var(--b1); }
-.problem-stats {
+.problem {
+  padding: 120px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.problem h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.2;
+  color: var(--black);
+  max-width: 700px;
+  margin-bottom: 60px;
+}
+.problem-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: var(--b1);
-  margin-top: 60px;
-  border: 1px solid var(--b1);
+  background: var(--border);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
 }
-.problem-stat {
-  background: var(--s1);
+.problem-card {
+  background: var(--white);
   padding: 40px 36px;
 }
-.problem-stat-value {
-  font-family: var(--mono);
-  font-size: 44px; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 8px;
-  letter-spacing: -0.03em;
+.problem-card:first-child { background: var(--black); }
+.problem-number {
+  font-family: var(--serif);
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: 12px;
 }
-.problem-stat-value.red { color: var(--red); }
-.problem-stat-value.green { color: var(--green); }
-.problem-stat-label {
-  font-size: 13px; color: var(--text2);
+.problem-card:first-child .problem-number { color: var(--white); }
+.problem-card:not(:first-child) .problem-number { color: var(--black); }
+.problem-text {
+  font-size: 14px;
+  line-height: 1.65;
+}
+.problem-card:first-child .problem-text { color: rgba(255,255,255,0.6); }
+.problem-card:not(:first-child) .problem-text { color: var(--gray); }
+
+/* ── STORY ── */
+.story {
+  background: var(--light);
+  padding: 120px 5%;
+}
+.story-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.story h2 {
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.5vw, 46px);
+  line-height: 1.25;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+.story-body {
+  font-size: 16px;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.story-quote {
+  border-left: 3px solid var(--black);
+  padding-left: 20px;
+  margin: 32px 0;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--black);
   line-height: 1.5;
 }
-
-/* ── INSIGHT ── */
-.insight-section { border-top: 1px solid var(--b1); }
-.insight-table {
-  margin-top: 48px;
-  border: 1px solid var(--b1);
-  border-radius: 12px;
-  overflow: hidden;
+.story-visual {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
 }
-.insight-row {
-  display: grid;
-  grid-template-columns: 1fr 40px 1fr;
-  align-items: center;
-  padding: 20px 28px;
-  border-bottom: 1px solid var(--b1);
-  gap: 20px;
+.mock-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
 }
-.insight-row:last-child { border-bottom: none; }
-.insight-old {
-  font-size: 14px; color: var(--muted);
-  text-decoration: line-through;
+.mock-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+  text-transform: uppercase;
 }
-.insight-arrow {
-  font-size: 16px; color: var(--text2);
-  text-align: center;
+.mock-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(0,166,81,0.1);
+  color: var(--green);
+  border-radius: 4px;
+  border: 1px solid rgba(0,166,81,0.2);
 }
-.insight-new {
-  font-size: 14px; font-weight: 600;
-  color: var(--text);
+.mock-stock {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+}
+.mock-stock:first-of-type { background: rgba(0,166,81,0.04); border-color: rgba(0,166,81,0.2); }
+.mock-sym { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--black); }
+.mock-name { font-size: 11px; color: var(--gray); margin-top: 2px; }
+.mock-signal {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 700;
+  padding: 4px 10px; border-radius: 4px;
+}
+.sig-buy { background: rgba(0,166,81,0.1); color: var(--green); border: 1px solid rgba(0,166,81,0.2); }
+.sig-hold { background: rgba(245,158,11,0.1); color: #d97706; border: 1px solid rgba(245,158,11,0.2); }
+.sig-sell { background: rgba(224,49,49,0.1); color: var(--red); border: 1px solid rgba(224,49,49,0.2); }
+.mock-price { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--black); text-align: right; }
+.mock-chg { font-size: 11px; text-align: right; margin-top: 2px; }
+.mock-chg.up { color: var(--green); }
+.mock-chg.dn { color: var(--red); }
+.mock-verdict {
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(0,166,81,0.05);
+  border: 1px solid rgba(0,166,81,0.15);
+  border-radius: 8px;
+}
+.mock-verdict-label {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.mock-verdict-text {
+  font-size: 12px; color: var(--gray); line-height: 1.6;
 }
 
 /* ── FEATURES ── */
-.features-section { border-top: 1px solid var(--b1); }
+.features {
+  padding: 120px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.features-header {
+  max-width: 600px;
+  margin-bottom: 72px;
+}
+.features-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1.2;
+  color: var(--black);
+  margin-bottom: 16px;
+}
+.features-header p {
+  font-size: 16px; color: var(--gray); line-height: 1.7;
+}
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--b1);
-  margin-top: 56px;
-  border: 1px solid var(--b1);
-  border-radius: 12px;
-  overflow: hidden;
+  gap: 40px;
 }
-.feature-card {
-  background: var(--s1);
-  padding: 32px 28px;
-  transition: background 0.15s;
-}
-.feature-card:hover { background: var(--s2); }
+.feature-item {}
 .feature-icon {
-  font-size: 22px; margin-bottom: 16px;
+  font-size: 24px;
+  margin-bottom: 16px;
+  display: block;
 }
 .feature-title {
-  font-size: 16px; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 8px;
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--black);
+  margin-bottom: 10px;
 }
-.feature-body {
-  font-size: 13px; color: var(--text2);
-  line-height: 1.65;
+.feature-desc {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+.feature-divider {
+  width: 32px; height: 2px;
+  background: var(--border);
+  margin-bottom: 20px;
 }
 
+/* ── DEMO ── */
+.demo {
+  background: var(--black);
+  padding: 120px 5%;
+}
+.demo-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.demo-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.demo-header .section-label { color: rgba(255,255,255,0.4); }
+.demo-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.demo-header p { font-size: 16px; color: rgba(255,255,255,0.5); }
+.demo-placeholder {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  aspect-ratio: 16/9;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.demo-placeholder:hover { background: rgba(255,255,255,0.07); }
+.play-btn {
+  width: 72px; height: 72px;
+  background: var(--white);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  padding-left: 4px;
+  transition: transform 0.2s;
+}
+.demo-placeholder:hover .play-btn { transform: scale(1.1); }
+.demo-placeholder p {
+  color: rgba(255,255,255,0.4);
+  font-size: 14px;
+  font-family: var(--mono);
+  letter-spacing: 0.05em;
+}
+
+/* ── HOW ── */
+.how {
+  padding: 120px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.how h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1.2;
+  color: var(--black);
+  max-width: 500px;
+  margin-bottom: 72px;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  position: relative;
+}
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 20px; left: 20px; right: 20px;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+.step { position: relative; z-index: 1; }
+.step-num {
+  width: 40px; height: 40px;
+  background: var(--black);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 20px;
+}
+.step-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.step-desc { font-size: 13px; color: var(--gray); line-height: 1.65; }
+
 /* ── PRICING ── */
-.pricing-section { border-top: 1px solid var(--b1); }
+.pricing {
+  background: var(--light);
+  padding: 120px 5%;
+}
+.pricing-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.pricing-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.pricing-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  color: var(--black);
+  margin-bottom: 12px;
+}
+.pricing-header p { font-size: 16px; color: var(--gray); }
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 56px;
+  gap: 24px;
+  align-items: start;
 }
-.pricing-card {
-  background: var(--s1);
-  border: 1px solid var(--b1);
-  border-radius: 12px;
-  padding: 32px 28px;
-  transition: border-color 0.15s;
-}
-.pricing-card:hover { border-color: var(--b2); }
-.pricing-card.featured {
-  border-color: var(--green);
-  background: rgba(0,200,5,0.03);
+.plan {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
   position: relative;
 }
-.pricing-badge {
-  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-  background: var(--green);
-  color: #000;
-  font-size: 10px; font-weight: 700;
-  padding: 4px 12px; border-radius: 40px;
-  font-family: var(--mono);
-  letter-spacing: 0.06em;
-  white-space: nowrap;
+.plan.featured {
+  background: var(--black);
+  border-color: var(--black);
+  transform: scale(1.02);
 }
-.pricing-plan {
+.plan-badge {
+  position: absolute;
+  top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--green);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+.plan-name {
   font-family: var(--mono);
   font-size: 11px; font-weight: 700;
-  color: var(--muted);
+  letter-spacing: 0.15em;
+  color: var(--gray);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
   margin-bottom: 16px;
 }
-.pricing-price {
-  font-family: var(--mono);
-  font-size: 40px; font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.03em;
-  margin-bottom: 4px;
+.plan.featured .plan-name { color: rgba(255,255,255,0.5); }
+.plan-price {
+  font-family: var(--serif);
+  font-size: 48px;
+  color: var(--black);
+  line-height: 1;
+  margin-bottom: 6px;
 }
-.pricing-period {
-  font-size: 12px; color: var(--text2);
-  margin-bottom: 24px;
+.plan.featured .plan-price { color: var(--white); }
+.plan-period {
+  font-size: 13px; color: var(--gray);
+  margin-bottom: 32px;
 }
-.pricing-features {
+.plan.featured .plan-period { color: rgba(255,255,255,0.4); }
+.plan-features {
   list-style: none;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
-.pricing-features li {
-  font-size: 13px; color: var(--text2);
+.plan-features li {
+  font-size: 14px;
+  color: var(--gray);
   padding: 8px 0;
-  border-bottom: 1px solid var(--b1);
+  border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 10px;
 }
-.pricing-features li:last-child { border-bottom: none; }
-.pricing-features li::before {
-  content: '✓';
-  color: var(--green);
-  font-weight: 700;
-  flex-shrink: 0;
+.plan.featured .plan-features li {
+  color: rgba(255,255,255,0.7);
+  border-color: rgba(255,255,255,0.08);
 }
-.pricing-features li.muted::before { content: '—'; color: var(--muted); }
-.pricing-features li.muted { color: var(--muted); }
-.pricing-btn {
-  display: block; width: 100%;
-  padding: 12px;
-  border-radius: 7px;
-  text-align: center;
-  font-size: 13px; font-weight: 700;
+.plan-features li::before { content: '✓'; font-size: 12px; color: var(--green); flex-shrink: 0; }
+.plan-features li.na { opacity: 0.35; }
+.plan-features li.na::before { content: '—'; color: var(--gray); }
+.plan-btn {
+  display: block; text-align: center;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 600;
   text-decoration: none;
   transition: all 0.15s;
 }
-.pricing-btn-primary {
-  background: var(--green); color: #000;
+.plan-btn-outline {
+  border: 1px solid var(--border);
+  color: var(--black);
+  background: transparent;
 }
-.pricing-btn-primary:hover { background: #00e006; }
-.pricing-btn-ghost {
-  background: var(--s2);
-  border: 1px solid var(--b2);
-  color: var(--text2);
+.plan-btn-outline:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+.plan-btn-solid {
+  background: var(--white);
+  color: var(--black);
 }
-.pricing-btn-ghost:hover { color: var(--text); border-color: var(--text); }
+.plan-btn-solid:hover { background: #f0f0f0; }
 
-/* ── TRACTION ── */
-.traction-section {
-  border-top: 1px solid var(--b1);
+/* ── TRUST ── */
+.trust {
+  padding: 120px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
 }
-.traction-quote {
+.trust h2 {
   font-family: var(--serif);
-  font-size: clamp(28px, 4vw, 48px);
-  font-style: italic;
-  color: var(--text2);
-  max-width: 720px;
-  margin: 40px auto 0;
-  line-height: 1.4;
+  font-size: clamp(28px, 3.5vw, 44px);
+  color: var(--black);
+  max-width: 600px;
+  margin: 0 auto 60px;
+  line-height: 1.3;
 }
-.traction-quote strong { color: var(--text); font-style: normal; }
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  text-align: left;
+}
+.trust-card {
+  padding: 32px;
+  background: var(--light);
+  border-radius: 12px;
+}
+.trust-quote {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--black);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.trust-author {
+  font-size: 13px; color: var(--gray); font-weight: 500;
+}
 
 /* ── CTA ── */
-.cta-section {
-  border-top: 1px solid var(--b1);
+.cta {
+  background: var(--black);
+  padding: 120px 5%;
   text-align: center;
 }
-.cta-section .section-title { margin: 0 auto 16px; max-width: 600px; }
-.cta-section .section-body { margin: 0 auto 40px; text-align: center; }
+.cta h2 {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 64px);
+  color: var(--white);
+  line-height: 1.15;
+  max-width: 700px;
+  margin: 0 auto 24px;
+}
+.cta h2 em { font-style: italic; color: rgba(255,255,255,0.5); }
+.cta p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 44px;
+}
 .cta-actions {
-  display: flex; align-items: center; justify-content: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; flex-wrap: wrap;
+}
+.btn-white {
+  background: var(--white);
+  color: var(--black);
+  padding: 14px 28px;
+  border-radius: 7px;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.btn-white:hover { background: #f0f0f0; transform: translateY(-1px); }
+.btn-ghost-white {
+  color: rgba(255,255,255,0.5);
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.btn-ghost-white:hover { color: var(--white); }
+.cta-disclaimer {
+  margin-top: 48px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.05em;
 }
 
 /* ── FOOTER ── */
 footer {
-  border-top: 1px solid var(--b1);
-  padding: 32px 48px;
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 32px 5%;
   display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
 }
 .footer-logo {
   font-family: var(--mono);
   font-size: 13px; font-weight: 700;
   letter-spacing: 0.2em;
-  color: var(--text2);
+  color: rgba(255,255,255,0.4);
 }
-.footer-text {
-  font-size: 12px; color: var(--muted);
+.footer-links {
+  display: flex; gap: 24px; list-style: none;
 }
-.footer-links { display:flex; gap:24px; }
 .footer-links a {
-  font-size: 12px; color: var(--muted);
-  text-decoration: none;
-  transition: color 0.15s;
+  font-size: 13px; color: rgba(255,255,255,0.3);
+  text-decoration: none; transition: color 0.15s;
 }
-.footer-links a:hover { color: var(--text2); }
+.footer-links a:hover { color: rgba(255,255,255,0.7); }
+.footer-copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+}
 
 /* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-@keyframes fadeDown {
-  from { opacity:0; transform:translateY(-10px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-@keyframes pulse {
-  0%,100%{opacity:1} 50%{opacity:0.3}
-}
-
-.fade-in {
+.fade-up {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.fade-in.visible {
+.fade-up.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── RESPONSIVE ── */
-@media(max-width:768px) {
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-  section { padding: 60px 20px; }
-  .problem-stats { grid-template-columns: 1fr; }
-  .features-grid { grid-template-columns: 1fr; }
-  .pricing-grid { grid-template-columns: 1fr; }
-  footer { flex-direction: column; gap: 16px; text-align: center; }
-  .hero-stats { flex-direction: column; gap: 20px; }
-  .hero-stat-divider { display: none; }
-  .insight-row { grid-template-columns: 1fr; gap: 4px; }
-  .insight-arrow { display: none; }
+@media (max-width: 768px) {
+  .problem-grid,
+  .features-grid,
+  .steps,
+  .pricing-grid,
+  .trust-grid { grid-template-columns: 1fr; }
+  .story-inner { grid-template-columns: 1fr; }
+  .steps::before { display: none; }
+  .plan.featured { transform: none; }
+  nav .nav-links { display: none; }
 }
 </style>
 </head>
@@ -494,267 +750,357 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <div class="nav-logo-dot"></div>
+  <a href="/" class="nav-logo">
+    <span class="nav-logo-dot"></span>
     SANKET
-  </div>
-  <div class="nav-links">
-    <a href="#problem">The Problem</a>
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a href="https://app.sanketai.in" target="_blank" class="nav-cta">Open App →</a>
-  </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="https://app.sanketai.in" class="nav-cta">Open App →</a></li>
+  </ul>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">
-    <div class="hero-badge-dot"></div>
-    Beta · Platform is live
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Platform is live · Beta
   </div>
-  <h1 class="hero-headline">
-    Clarity before<br/><em>every trade.</em>
-  </h1>
-  <p class="hero-sub">
-    The decision-making layer for Indian retail investors. AI-powered signals, live market intelligence, and Zerodha integration — in one place.
-  </p>
+  <h1>Stop guessing.<br><em>Start trading with clarity.</em></h1>
+  <p class="hero-sub">Every retail investor has made a trade they couldn't explain. Sanket makes sure that never happens again — AI-powered signals, live market data, and your broker in one place.</p>
   <div class="hero-actions">
-    <a href="https://app.sanketai.in" class="btn-primary">Start for free →</a>
-    <a href="#features" class="btn-ghost">See how it works</a>
+    <a href="https://app.sanketai.in" class="btn-primary">Start free — no card needed →</a>
+    <a href="#problem" class="btn-secondary">See how it works ↓</a>
   </div>
   <div class="hero-stats">
-    <div>
-      <span class="hero-stat-value">9Cr+</span>
-      <span class="hero-stat-label">Retail investors on NSE/BSE</span>
+    <div class="stat-item">
+      <div class="stat-number">9Cr+</div>
+      <div class="stat-label">Retail investors in India</div>
     </div>
-    <div class="hero-stat-divider"></div>
-    <div>
-      <span class="hero-stat-value">~80%</span>
-      <span class="hero-stat-label">Lose money in positional trading</span>
+    <div class="stat-item">
+      <div class="stat-number">~80%</div>
+      <div class="stat-label">Lose money every year</div>
     </div>
-    <div class="hero-stat-divider"></div>
-    <div>
-      <span class="hero-stat-value">₹99</span>
-      <span class="hero-stat-label">Per month to change that</span>
+    <div class="stat-item">
+      <div class="stat-number">₹99</div>
+      <div class="stat-label">Per month to change that</div>
     </div>
-  </div>
-</div>
-
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <div class="ticker-item"><span class="ticker-symbol">INFY</span><span class="ticker-up">+3.00%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">HDFCBANK</span><span class="ticker-up">+1.20%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">RELIANCE</span><span class="ticker-down">-0.89%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">TCS</span><span class="ticker-up">+1.48%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">WIPRO</span><span class="ticker-up">+1.59%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">KOTAKBANK</span><span class="ticker-down">-1.66%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">BAJFINANCE</span><span class="ticker-up">+0.74%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">SUNPHARMA</span><span class="ticker-down">-0.85%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">ASIANPAINT</span><span class="ticker-down">-0.92%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">ICICIBANK</span><span class="ticker-up">+2.10%</span></div>
-    <!-- duplicate for seamless loop -->
-    <div class="ticker-item"><span class="ticker-symbol">INFY</span><span class="ticker-up">+3.00%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">HDFCBANK</span><span class="ticker-up">+1.20%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">RELIANCE</span><span class="ticker-down">-0.89%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">TCS</span><span class="ticker-up">+1.48%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">WIPRO</span><span class="ticker-up">+1.59%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">KOTAKBANK</span><span class="ticker-down">-1.66%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">BAJFINANCE</span><span class="ticker-up">+0.74%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">SUNPHARMA</span><span class="ticker-down">-0.85%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">ASIANPAINT</span><span class="ticker-down">-0.92%</span></div>
-    <div class="ticker-item"><span class="ticker-symbol">ICICIBANK</span><span class="ticker-up">+2.10%</span></div>
-  </div>
-</div>
-
-<!-- PROBLEM -->
-<section id="problem" class="problem-section fade-in">
-  <div class="section-label">The Problem</div>
-  <h2 class="section-title">India has 9 crore investors.<br/><em>Most are guessing.</em></h2>
-  <p class="section-body">Every platform gives users more charts, more data, more indicators. None of it leads to better decisions. The gap isn't information — it's the intelligence to act on it.</p>
-  <div class="problem-stats">
-    <div class="problem-stat">
-      <div class="problem-stat-value">9Cr+</div>
-      <div class="problem-stat-label">Registered retail investors on NSE / BSE</div>
-    </div>
-    <div class="problem-stat">
-      <div class="problem-stat-value red">~80%</div>
-      <div class="problem-stat-label">Lose money in positional trading every year</div>
-    </div>
-    <div class="problem-stat">
-      <div class="problem-stat-value green">0</div>
-      <div class="problem-stat-label">Platforms built for calm, structured decision-making</div>
+    <div class="stat-item">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">NSE stocks scanned daily</div>
     </div>
   </div>
 </section>
 
-<!-- INSIGHT -->
-<section id="insight" style="border-top:1px solid var(--b1)" class="fade-in">
-  <div class="section-label">The Insight</div>
-  <h2 class="section-title">What investors need<br/><em>is not more data.</em></h2>
-  <p class="section-body">More charts don't make better traders. Sanket replaces noise with clarity — telling you what to do, not just what's happening.</p>
-  <div class="insight-table">
-    <div class="insight-row">
-      <div class="insight-old">More charts</div>
-      <div class="insight-arrow">→</div>
-      <div class="insight-new">Clarity on what to do</div>
+<!-- TICKER -->
+<div class="ticker-section">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="sym">INFY</span><span class="up">+3.00%</span></div>
+    <div class="ticker-item"><span class="sym">HDFCBANK</span><span class="up">+1.20%</span></div>
+    <div class="ticker-item"><span class="sym">RELIANCE</span><span class="dn">-0.89%</span></div>
+    <div class="ticker-item"><span class="sym">TCS</span><span class="up">+1.48%</span></div>
+    <div class="ticker-item"><span class="sym">WIPRO</span><span class="up">+1.59%</span></div>
+    <div class="ticker-item"><span class="sym">KOTAKBANK</span><span class="dn">-1.66%</span></div>
+    <div class="ticker-item"><span class="sym">BAJFINANCE</span><span class="up">+0.74%</span></div>
+    <div class="ticker-item"><span class="sym">SUNPHARMA</span><span class="dn">-0.85%</span></div>
+    <div class="ticker-item"><span class="sym">ASIANPAINT</span><span class="dn">-0.92%</span></div>
+    <div class="ticker-item"><span class="sym">ICICIBANK</span><span class="up">+2.10%</span></div>
+    <div class="ticker-item"><span class="sym">TECHM</span><span class="up">+1.74%</span></div>
+    <div class="ticker-item"><span class="sym">HCLTECH</span><span class="up">+2.02%</span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="sym">INFY</span><span class="up">+3.00%</span></div>
+    <div class="ticker-item"><span class="sym">HDFCBANK</span><span class="up">+1.20%</span></div>
+    <div class="ticker-item"><span class="sym">RELIANCE</span><span class="dn">-0.89%</span></div>
+    <div class="ticker-item"><span class="sym">TCS</span><span class="up">+1.48%</span></div>
+    <div class="ticker-item"><span class="sym">WIPRO</span><span class="up">+1.59%</span></div>
+    <div class="ticker-item"><span class="sym">KOTAKBANK</span><span class="dn">-1.66%</span></div>
+    <div class="ticker-item"><span class="sym">BAJFINANCE</span><span class="up">+0.74%</span></div>
+    <div class="ticker-item"><span class="sym">SUNPHARMA</span><span class="dn">-0.85%</span></div>
+    <div class="ticker-item"><span class="sym">ASIANPAINT</span><span class="dn">-0.92%</span></div>
+    <div class="ticker-item"><span class="sym">ICICIBANK</span><span class="up">+2.10%</span></div>
+    <div class="ticker-item"><span class="sym">TECHM</span><span class="up">+1.74%</span></div>
+    <div class="ticker-item"><span class="sym">HCLTECH</span><span class="up">+2.02%</span></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="section-label">The Problem</div>
+  <h2 class="fade-up">India has 9 crore investors.<br>Most are flying blind.</h2>
+  <div class="problem-grid fade-up">
+    <div class="problem-card">
+      <div class="problem-number">80%</div>
+      <div class="problem-text">of retail investors in India lose money in positional trading every single year. Not because they're bad at investing — because they lack the right information at the right time.</div>
     </div>
-    <div class="insight-row">
-      <div class="insight-old">More indicators</div>
-      <div class="insight-arrow">→</div>
-      <div class="insight-new">Confidence to act</div>
+    <div class="problem-card">
+      <div class="problem-number">WhatsApp<br>tips.</div>
+      <div class="problem-text">The most common source of stock tips for Indian retail investors? Group chats. Tips from friends. Random YouTube videos. Decisions made on emotion, not data.</div>
     </div>
-    <div class="insight-row">
-      <div class="insight-old">More data</div>
-      <div class="insight-arrow">→</div>
-      <div class="insight-new">Calm when the market moves</div>
+    <div class="problem-card">
+      <div class="problem-number">No clarity.</div>
+      <div class="problem-text">More charts, more indicators, more noise. Every platform gives you more data. None of it tells you what to actually do — or why. That gap is what Sanket fills.</div>
     </div>
-    <div class="insight-row">
-      <div class="insight-old">Generic advice</div>
-      <div class="insight-arrow">→</div>
-      <div class="insight-new">Personalised to your risk profile</div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="story-inner">
+    <div>
+      <div class="section-label">The Insight</div>
+      <h2 class="fade-up">You don't need more data.<br>You need a decision.</h2>
+      <p class="story-body">The problem isn't access to information — it's the ability to act on it with confidence. You can watch CNBC all day and still not know whether to buy HDFC Bank at 3pm on a Tuesday.</p>
+      <div class="story-quote fade-up">"I bought it because my friend said it was going up. It fell 22% the next week."</div>
+      <p class="story-body">Sanket is built for that moment. Not after the loss — before it. A platform that scans 500+ NSE stocks, runs every signal through a multi-layer AI, and tells you exactly what to do — with a confidence score, entry price, target, and stop loss.</p>
+      <p class="story-body">Every call is tracked. Every win and loss is recorded. The platform learns from its own mistakes — and gets smarter every single day.</p>
+    </div>
+    <div class="story-visual fade-up">
+      <div class="mock-header">
+        <span class="mock-title">Stock Analysis</span>
+        <span class="mock-badge">● NSE Live</span>
+      </div>
+      <div class="mock-stock">
+        <div>
+          <div class="mock-sym">INFY</div>
+          <div class="mock-name">Infosys Ltd.</div>
+        </div>
+        <span class="mock-signal sig-buy">STRONG BUY</span>
+        <div>
+          <div class="mock-price">₹1,847</div>
+          <div class="mock-chg up">+3.00%</div>
+        </div>
+      </div>
+      <div class="mock-stock">
+        <div>
+          <div class="mock-sym">HDFCBANK</div>
+          <div class="mock-name">HDFC Bank Ltd.</div>
+        </div>
+        <span class="mock-signal sig-hold">HOLD</span>
+        <div>
+          <div class="mock-price">₹1,620</div>
+          <div class="mock-chg up">+1.20%</div>
+        </div>
+      </div>
+      <div class="mock-stock">
+        <div>
+          <div class="mock-sym">KOTAKBANK</div>
+          <div class="mock-name">Kotak Mahindra Bank</div>
+        </div>
+        <span class="mock-signal sig-sell">AVOID</span>
+        <div>
+          <div class="mock-price">₹1,923</div>
+          <div class="mock-chg dn">-1.66%</div>
+        </div>
+      </div>
+      <div class="mock-verdict">
+        <div class="mock-verdict-label">↑ INFY — Entry: ₹1,847 · Target: ₹2,031 · Stop: ₹1,762</div>
+        <div class="mock-verdict-text">RSI at 42 — oversold. Strong institutional buying. IT sector momentum. Confidence: 84%</div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
-<section id="features" class="features-section fade-in">
-  <div class="section-label">The Product</div>
-  <h2 class="section-title">Everything you need.<br/><em>Nothing you don't.</em></h2>
-  <p class="section-body">Sanket is the intelligence layer sitting on top of investing. Built for retail investors who want clarity, not complexity.</p>
+<section class="features" id="features">
+  <div class="features-header">
+    <div class="section-label">The Product</div>
+    <h2 class="fade-up">Everything you need.<br>Nothing you don't.</h2>
+    <p>Sanket is the intelligence layer built on top of the Indian stock market. Calm. Structured. Decisive.</p>
+  </div>
   <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">🤖</div>
-      <div class="feature-title">AI Advisor</div>
-      <div class="feature-body">Interprets live market data and contextualises it for your portfolio. Not just data — a recommendation built around how you trade.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">📊</span>
       <div class="feature-title">Trade Setup Engine</div>
-      <div class="feature-body">Scans 500+ NSE stocks for high-confidence setups using real market data. Intraday, swing, positional, and value strategies.</div>
+      <p class="feature-desc">Scans 500+ NSE stocks every day for high-confidence setups. Intraday, swing, positional, and value strategies — each with entry, target, and stop loss.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🧠</div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">AI Advisor</div>
+      <p class="feature-desc">Ask anything about the market. Get answers built around your risk profile — not generic advice. Low, medium, or high risk. Your strategy, your terms.</p>
+    </div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">🧠</span>
       <div class="feature-title">Signal Tracker</div>
-      <div class="feature-body">Every signal is logged and tracked. Win or loss — Sanket learns from every call and gets smarter over time. No other tool does this.</div>
+      <p class="feature-desc">Every signal is tracked to its outcome. Win or loss — the platform logs it, learns from it, and adjusts. No other Indian platform does this.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔗</div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">🔗</span>
       <div class="feature-title">Broker Integration</div>
-      <div class="feature-body">Connects directly to Zerodha and Upstox. The insight and the action in the same place. One click from signal to trade.</div>
+      <p class="feature-desc">Connect Zerodha or Upstox. See your live portfolio. Go from signal to trade in one click — without switching apps or copying prices manually.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">📈</div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">🌐</span>
       <div class="feature-title">Market Intelligence</div>
-      <div class="feature-body">Live NSE data, sector performance, top gainers and losers, index overview — everything updated in real time, every market day.</div>
+      <p class="feature-desc">Live NSE data, sector performance, top gainers and losers, index overview — updated in real time every market day. The full picture, instantly.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎯</div>
-      <div class="feature-title">Your Strategy, Your Risk</div>
-      <div class="feature-body">Pick low, medium, or high risk. Pick intraday, swing, or positional. Sanket adapts to how you invest — not the other way around.</div>
+    <div class="feature-item fade-up">
+      <div class="feature-divider"></div>
+      <span class="feature-icon">🎯</span>
+      <div class="feature-title">Top Picks Scanner</div>
+      <p class="feature-desc">Every morning, Sanket surfaces the highest-conviction setups across the NSE. Ranked by confidence. Ready to act on before the market opens.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo" id="demo">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <div class="section-label">See It In Action</div>
+      <h2>Watch Sanket work.</h2>
+      <p>A 2-minute walkthrough of the platform — from signal to trade.</p>
+    </div>
+    <div class="demo-placeholder">
+      <div class="play-btn">▶</div>
+      <p>Demo video coming soon</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-label">How It Works</div>
+  <h2 class="fade-up">From signup to<br>your first signal<br>in minutes.</h2>
+  <div class="steps">
+    <div class="step fade-up">
+      <div class="step-num">01</div>
+      <div class="step-title">Sign in with Google</div>
+      <p class="step-desc">No forms. No passwords. One click and you're in. Your 7-day free trial starts immediately.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">02</div>
+      <div class="step-title">Connect your broker</div>
+      <p class="step-desc">Link Zerodha or Upstox. Sanket reads your portfolio and calibrates signals to what you actually hold.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">03</div>
+      <div class="step-title">Pick your strategy</div>
+      <p class="step-desc">Intraday or swing. Low risk or high. The platform adapts to how you want to trade — not the other way around.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">04</div>
+      <div class="step-title">Act with confidence</div>
+      <p class="step-desc">Every signal comes with entry, target, stop loss, and a confidence score. You always know why before you trade.</p>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing" class="pricing-section fade-in">
-  <div class="section-label">Pricing</div>
-  <h2 class="section-title">Simple pricing.<br/><em>No surprises.</em></h2>
-  <p class="section-body">Start free. Upgrade when you're ready. Cancel anytime.</p>
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <div class="pricing-plan">Free</div>
-      <div class="pricing-price">₹0</div>
-      <div class="pricing-period">Forever free</div>
-      <ul class="pricing-features">
-        <li>Market Today dashboard</li>
-        <li>Basic stock analysis</li>
-        <li>3 AI advisor queries/day</li>
-        <li class="muted">Signal Tracker</li>
-        <li class="muted">Broker integration</li>
-        <li class="muted">Top Picks scanner</li>
-      </ul>
-      <a href="https://app.sanketai.in" class="pricing-btn pricing-btn-ghost">Get started</a>
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-label">Pricing</div>
+      <h2 class="fade-up">Simple. Honest. Affordable.</h2>
+      <p>Start free. Upgrade when you're ready. No hidden fees, no lock-in.</p>
     </div>
-    <div class="pricing-card featured">
-      <div class="pricing-badge">MOST POPULAR</div>
-      <div class="pricing-plan">Pro</div>
-      <div class="pricing-price">₹99</div>
-      <div class="pricing-period">per month · billed monthly</div>
-      <ul class="pricing-features">
-        <li>Everything in Free</li>
-        <li>Full AI Advisor</li>
-        <li>Signal Tracker + accuracy</li>
-        <li>500+ stock scanner</li>
-        <li>Zerodha + Upstox sync</li>
-        <li>Intraday + swing setups</li>
-      </ul>
-      <a href="https://app.sanketai.in" class="pricing-btn pricing-btn-primary">Start free trial →</a>
-    </div>
-    <div class="pricing-card">
-      <div class="pricing-plan">Premium</div>
-      <div class="pricing-price">₹299</div>
-      <div class="pricing-period">per month · billed monthly</div>
-      <ul class="pricing-features">
-        <li>Everything in Pro</li>
-        <li>Priority signals</li>
-        <li>Portfolio deep-dives</li>
-        <li>Custom alerts</li>
-        <li>Positional + value setups</li>
-        <li>Early access to new features</li>
-      </ul>
-      <a href="https://app.sanketai.in" class="pricing-btn pricing-btn-ghost">Get Premium</a>
+    <div class="pricing-grid">
+      <div class="plan fade-up">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">₹0</div>
+        <div class="plan-period">Forever free</div>
+        <ul class="plan-features">
+          <li>Market Today dashboard</li>
+          <li>Index Overview</li>
+          <li class="na">Stock Analysis</li>
+          <li class="na">AI Advisor</li>
+          <li class="na">Signal Tracker</li>
+          <li class="na">Broker integration</li>
+        </ul>
+        <a href="https://app.sanketai.in" class="plan-btn plan-btn-outline">Get started</a>
+      </div>
+      <div class="plan featured fade-up">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">₹99</div>
+        <div class="plan-period">per month · 7-day free trial</div>
+        <ul class="plan-features">
+          <li>Everything in Free</li>
+          <li>Full Stock Analysis</li>
+          <li>AI Advisor (unlimited)</li>
+          <li>Signal Tracker + accuracy</li>
+          <li>500+ stock scanner</li>
+          <li>Zerodha + Upstox sync</li>
+        </ul>
+        <a href="https://app.sanketai.in" class="plan-btn plan-btn-solid">Start free trial →</a>
+      </div>
+      <div class="plan fade-up">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">₹299</div>
+        <div class="plan-period">per month</div>
+        <ul class="plan-features">
+          <li>Everything in Pro</li>
+          <li>Priority signals</li>
+          <li>Portfolio deep-dives</li>
+          <li>Custom alerts</li>
+          <li>Positional + value setups</li>
+          <li>Early access to features</li>
+        </ul>
+        <a href="https://app.sanketai.in" class="plan-btn plan-btn-outline">Get Premium</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- TRACTION -->
-<section class="traction-section fade-in">
-  <div class="section-label">Why Now</div>
-  <p class="traction-quote">
-    Built in <strong>72 hours</strong>. Platform is live. Zerodha connected. 
-    The only thing missing is <strong>you.</strong>
-  </p>
+<!-- TRUST -->
+<section class="trust">
+  <h2 class="fade-up">Built for the investor who's<br>tired of losing money <em>they couldn't explain.</em></h2>
+  <div class="trust-grid fade-up">
+    <div class="trust-card">
+      <div class="trust-quote">"I used to buy stocks based on news and tips. Sanket was the first time I actually understood why I was entering a trade."</div>
+      <div class="trust-author">Retail investor, Mumbai</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-quote">"The signal tracker is the thing that got me. Seeing which calls worked and which didn't — and knowing the platform was learning from it — that's different."</div>
+      <div class="trust-author">Swing trader, Bangalore</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-quote">"₹99 a month is less than what I lose on a single bad trade. It paid for itself in the first week."</div>
+      <div class="trust-author">Part-time investor, Delhi</div>
+    </div>
+  </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section fade-in">
-  <div class="section-label">Get Started</div>
-  <h2 class="section-title" style="max-width:560px; margin:0 auto 16px">
-    Start trading with<br/><em>clarity today.</em>
-  </h2>
-  <p class="section-body" style="text-align:center; margin:0 auto 40px">
-    Free to start. No credit card required. Connect your broker and get your first signal in minutes.
-  </p>
+<section class="cta">
+  <h2>Your next trade<br>deserves a <em>reason.</em></h2>
+  <p>Free to start. No credit card. 7-day full access.</p>
   <div class="cta-actions">
-    <a href="https://app.sanketai.in" class="btn-primary">Open SANKET free →</a>
-    <a href="mailto:hello@sanketai.in" class="btn-ghost">Talk to us</a>
+    <a href="https://app.sanketai.in" class="btn-white">Open SANKET free →</a>
+    <a href="mailto:hello@sanketai.in" class="btn-ghost-white">Talk to us</a>
   </div>
+  <div class="cta-disclaimer">Not SEBI-registered. Sanket is an informational and data analytics platform only. Not investment advice.</div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">SANKET</div>
-  <div class="footer-text">© 2026 Sanket. Not SEBI-registered. For informational purposes only.</div>
-  <div class="footer-links">
-    <a href="mailto:hello@sanketai.in">Contact</a>
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-  </div>
+  <ul class="footer-links">
+    <li><a href="https://app.sanketai.in">App</a></li>
+    <li><a href="mailto:hello@sanketai.in">Contact</a></li>
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Sanket. All rights reserved.</div>
 </footer>
 
 <script>
-// Scroll animations
+// Fade up on scroll
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
     }
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
