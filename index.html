@@ -11,36 +11,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f5f3ec; --bg-2:#efece2; --surface:#ffffff; --surface-2:#faf8f2;
-    --line:#e7e2d6; --line-2:#d8d2c4;
+    --bg:#f5f3ec; --surface:#ffffff; --surface-2:#faf8f2; --line:#e7e2d6; --line-2:#d8d2c4;
     --ink:#1a1c22; --text-2:#565b65; --muted:#8b8f99;
     --gold:#b5872f; --gold-2:#caa24e; --gold-soft:rgba(181,135,47,.10);
-    --green:#11a06f; --green-2:#16c486; --green-soft:rgba(17,160,111,.12);
-    --red:#df4636;
+    --green:#11a06f; --green-2:#16c486; --green-soft:rgba(17,160,111,.12); --red:#df4636;
     --serif:'Fraunces',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
-    --sh-sm:0 1px 3px rgba(26,28,34,.05);
-    --sh-md:0 18px 40px -22px rgba(26,28,34,.22);
-    --sh-lg:0 40px 80px -38px rgba(26,28,34,.30);
+    --sh-sm:0 1px 3px rgba(26,28,34,.05); --sh-md:0 18px 40px -22px rgba(26,28,34,.22); --sh-lg:0 40px 80px -38px rgba(26,28,34,.30);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden;position:relative}
-  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:radial-gradient(80% 50% at 82% -8%, rgba(216,178,94,.22), transparent 55%),radial-gradient(70% 45% at 2% 6%, rgba(17,160,111,.10), transparent 52%)}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(80% 50% at 82% -8%, rgba(216,178,94,.22), transparent 55%),radial-gradient(70% 45% at 2% 6%, rgba(17,160,111,.10), transparent 52%)}
   .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 28px}
-  .mono{font-family:var(--mono)}
   a{color:inherit;text-decoration:none}
+  section{scroll-margin-top:90px}
 
-  /* nav */
-  nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:26px 28px}
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(160%) blur(12px);background:rgba(245,243,236,.78);border-bottom:1px solid transparent;transition:border-color .3s}
+  nav.scrolled{border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:16px 28px}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:.02em}
   .brand .dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--gold-2),var(--green));box-shadow:0 0 12px rgba(17,160,111,.4)}
-  .brand b{font-weight:600}.brand .pt{color:var(--gold)}
+  .brand .pt{color:var(--gold)}
+  .nav-links{display:flex;align-items:center;gap:26px;font-size:14px;color:var(--text-2)}
+  .nav-links a:not(.nav-cta){transition:color .2s}.nav-links a:not(.nav-cta):hover{color:var(--ink)}
   .nav-cta{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--ink);color:#fff;padding:10px 18px;border-radius:9px;transition:transform .2s,box-shadow .2s}
   .nav-cta:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
 
-  /* hero */
-  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:60px 0 40px}
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:56px 0 40px}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
   h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6vw,76px);line-height:.98;letter-spacing:-.02em;font-optical-sizing:none;font-variation-settings:'opsz' 40}
   h1 em{font-style:italic;color:var(--gold)}
@@ -51,17 +48,15 @@
   .btn-gold:hover{transform:translateY(-2px);filter:brightness(1.04)}
   .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
   .btn-ghost:hover{background:var(--surface);box-shadow:var(--sh-sm)}
-  .trust{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:26px;letter-spacing:.04em}
+  .trust-line{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:26px;letter-spacing:.04em}
 
-  /* hero decision card */
   .card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
   .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-2),var(--green))}
   .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
   .card-tk{font-family:var(--mono);font-size:12px;color:var(--text-2);letter-spacing:.06em}
   .badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:var(--green-soft);border:1px solid rgba(17,160,111,.3);padding:5px 10px;border-radius:20px}
   .card-mid{display:flex;align-items:center;gap:22px;padding:6px 0 18px;border-bottom:1px solid var(--line)}
-  .ring{position:relative;width:112px;height:112px;flex-shrink:0}
-  .ring svg{width:112px;height:112px}
+  .ring{position:relative;width:112px;height:112px;flex-shrink:0}.ring svg{width:112px;height:112px}
   .ring .fill{stroke-dasharray:301.6;stroke-dashoffset:301.6;animation:fill 1.5s cubic-bezier(.2,.7,.2,1) .4s forwards}
   @keyframes fill{to{stroke-dashoffset:51}}
   .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -70,7 +65,6 @@
   .verdict .v{font-family:var(--serif);font-weight:600;font-size:21px;color:var(--green);letter-spacing:-.01em}
   .verdict p{font-size:13px;color:var(--text-2);margin-top:6px;line-height:1.5}
   .levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
-  .lvl{text-align:left}
   .lvl .k{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .lvl .v{font-family:var(--mono);font-size:16px;font-weight:600;margin-top:5px}
   .size{margin-top:18px;background:var(--gold-soft);border:1px solid rgba(181,135,47,.22);border-radius:12px;padding:13px 16px}
@@ -78,13 +72,12 @@
   .size .v{font-family:var(--mono);font-size:14px;font-weight:600;margin-top:5px;color:var(--ink)}
   .size .v b{color:var(--gold)}
 
-  /* sections */
-  section{padding:56px 0;position:relative;z-index:1}
+  section.band{padding:56px 0}
   .sec-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-  h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.018em;max-width:18ch;font-optical-sizing:none;font-variation-settings:'opsz' 32}
-  .sec-lede{font-size:17px;color:var(--text-2);margin-top:18px;max-width:56ch;line-height:1.7}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.018em;max-width:20ch;font-optical-sizing:none;font-variation-settings:'opsz' 32}
+  .sec-lede{font-size:17px;color:var(--text-2);margin-top:18px;max-width:58ch;line-height:1.7}
 
-  .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
   .feat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--sh-sm);transition:transform .3s,box-shadow .3s}
   .feat:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
   .feat .ico{font-size:22px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
@@ -92,50 +85,75 @@
   .feat p{font-size:14px;color:var(--text-2);line-height:1.6}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
-  .step{position:relative;padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-sm)}
+  .step{padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-sm)}
   .step .n{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.1em}
   .step h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:10px 0 6px}
   .step p{font-size:13.5px;color:var(--text-2);line-height:1.6}
-  .step-out{margin-top:22px;text-align:center;font-family:var(--serif);font-size:20px;color:var(--ink)}
+  .step-out{margin-top:22px;text-align:center;font-family:var(--serif);font-size:20px}
   .step-out b{color:var(--green)}
 
-  .statement{text-align:center;padding:80px 0}
+  .approach{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px;box-shadow:var(--sh-sm);margin-top:24px}
+  .approach .row{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;margin-top:26px}
+  .pt{display:flex;gap:12px;align-items:flex-start}
+  .pt .b{color:var(--gold);font-family:var(--mono);font-size:12px;margin-top:3px}
+  .pt p{font-size:14px;color:var(--text-2);line-height:1.6}.pt b{color:var(--ink)}
+
+  .statement{text-align:center;padding:78px 0}
   .statement h2{margin:0 auto;max-width:24ch;font-size:clamp(32px,4.4vw,52px)}
   .statement .sec-lede{margin:22px auto 0}
 
+  .faq-list{margin-top:34px;border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line)}
+  summary{list-style:none;cursor:pointer;padding:20px 0;font-family:var(--serif);font-weight:600;font-size:18px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:'+';font-family:var(--mono);color:var(--gold);font-size:20px;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{padding:0 0 22px;font-size:14.5px;color:var(--text-2);line-height:1.7;max-width:72ch}
+
   .honesty{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:26px 28px;box-shadow:var(--sh-sm)}
   .honesty .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-  .honesty p{font-size:13.5px;color:var(--text-2);line-height:1.7;max-width:80ch}
+  .honesty p{font-size:13.5px;color:var(--text-2);line-height:1.7;max-width:84ch}
+  .honesty a{color:var(--gold);font-weight:600}
 
-  .final{text-align:center;padding:90px 0 70px}
+  .final{text-align:center;padding:84px 0 64px}
   .final h2{margin:0 auto 8px;font-size:clamp(38px,5vw,64px)}
   .final p{color:var(--text-2);font-size:17px;margin-bottom:30px}
 
-  footer{border-top:1px solid var(--line);padding:34px 0;margin-top:20px}
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .foot .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
-  .foot .fine{font-size:11px;color:var(--muted);max-width:60ch;line-height:1.6}
+  footer{border-top:1px solid var(--line);padding:40px 0 30px;margin-top:10px}
+  .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px}
+  .foot .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:10px}
+  .foot h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .foot a{display:block;font-size:14px;color:var(--text-2);margin-bottom:10px;transition:color .2s}.foot a:hover{color:var(--ink)}
+  .fine{max-width:1080px;margin:30px auto 0;padding:22px 28px 0;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.6}
 
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
   @media(max-width:860px){
-    .hero{grid-template-columns:1fr;gap:34px;padding:32px 0}
-    .feature-grid,.steps{grid-template-columns:1fr}
+    .hero{grid-template-columns:1fr;gap:34px;padding:30px 0}
+    .grid2,.steps,.approach .row,.foot{grid-template-columns:1fr}
+    .nav-links a:not(.nav-cta){display:none}
     h1{font-size:clamp(40px,11vw,60px)}
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="brand" href="#"><span class="dot"></span><b>Sanket<span class="pt">.</span></b></a>
-  <a class="nav-cta" href="https://app.sanketai.in">Open the app →</a>
+<nav id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top"><span class="dot"></span>Sanket<span class="pt">.</span></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#approach">Approach</a>
+      <a href="#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a class="nav-cta" href="https://app.sanketai.in">Open the app →</a>
+    </div>
+  </div>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="top">
 
-  <!-- HERO -->
   <header class="hero">
     <div>
       <div class="eyebrow">Risk-first trading intelligence</div>
@@ -145,27 +163,18 @@
         <a class="btn btn-gold" href="https://app.sanketai.in">Join the first 100 →</a>
         <a class="btn btn-ghost" href="#how">See how it works</a>
       </div>
-      <div class="trust">Educational technical analysis · Not investment advice</div>
+      <div class="trust-line">Educational technical analysis · Not investment advice</div>
     </div>
-
     <div class="card" id="heroCard">
-      <div class="card-top">
-        <span class="card-tk">RELIANCE · NSE · Swing</span>
-        <span class="badge">High conviction</span>
-      </div>
+      <div class="card-top"><span class="card-tk">RELIANCE · NSE · Swing</span><span class="badge">High conviction</span></div>
       <div class="card-mid">
         <div class="ring">
-          <svg viewBox="0 0 112 112">
-            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16c486"/><stop offset="1" stop-color="#11a06f"/></linearGradient></defs>
-            <circle cx="56" cy="56" r="48" fill="none" stroke="#e7e2d6" stroke-width="9"/>
-            <circle class="fill" cx="56" cy="56" r="48" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 56 56)"/>
-          </svg>
+          <svg viewBox="0 0 112 112"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16c486"/><stop offset="1" stop-color="#11a06f"/></linearGradient></defs>
+          <circle cx="56" cy="56" r="48" fill="none" stroke="#e7e2d6" stroke-width="9"/>
+          <circle class="fill" cx="56" cy="56" r="48" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 56 56)"/></svg>
           <div class="num"><b>83</b><span>/ 100</span></div>
         </div>
-        <div class="verdict">
-          <div class="v">Proceed, sized right</div>
-          <p>Signals aligned. Here is the plan, the exit, and the exact size for your capital.</p>
-        </div>
+        <div class="verdict"><div class="v">Proceed, sized right</div><p>Signals aligned. Here is the plan, the exit, and the exact size for your capital.</p></div>
       </div>
       <div class="levels">
         <div class="lvl"><div class="k">Entry</div><div class="v">₹1,432</div></div>
@@ -173,50 +182,28 @@
         <div class="lvl"><div class="k">Stop</div><div class="v" style="color:var(--red)">₹1,372</div></div>
         <div class="lvl"><div class="k">R : R</div><div class="v" style="color:var(--gold)">1.9 : 1</div></div>
       </div>
-      <div class="size">
-        <div class="k">Position size · capped to your capital</div>
-        <div class="v">₹5,00,000 capital → <b>83 shares</b> · max loss ₹4,980 (1.0%)</div>
-      </div>
+      <div class="size"><div class="k">Position size · capped to your capital</div><div class="v">₹5,00,000 capital → <b>83 shares</b> · max loss ₹4,980 (1.0%)</div></div>
     </div>
   </header>
 
-  <!-- PROBLEM -->
-  <section class="reveal">
+  <section class="band reveal">
     <div class="sec-eyebrow">The gap</div>
     <h2>Most apps help you find stocks. Almost none help you manage the risk.</h2>
     <p class="sec-lede">Finding something to buy is the easy part. The part that actually decides whether you keep your money is how much you risk, how big the position is, and when you get out. That is where most retail traders get hurt, and that is exactly where Sanket begins.</p>
   </section>
 
-  <!-- CORE -->
-  <section>
+  <section class="band">
     <div class="sec-eyebrow reveal">The core</div>
     <h2 class="reveal">Risk management, built into every call.</h2>
-    <div class="feature-grid">
-      <div class="feat reveal">
-        <div class="ico">⚖️</div>
-        <h3>Position sizing that respects your capital</h3>
-        <p>Exactly how many shares, capped to what you can actually afford, so a single stop-out can never blow a hole in your account. Risk a fixed, small slice of capital on every trade, automatically.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="ico">🎯</div>
-        <h3>An exit before you enter</h3>
-        <p>Every idea comes with a defined entry, target, and stop, and the reward-to-risk spelled out. No more deciding where to get out after the trade is already against you.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="ico">📊</div>
-        <h3>Conviction you can read at a glance</h3>
-        <p>One score that blends business health, the technical setup, and the market regime, so you know how much to trust an idea before you commit a rupee to it.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="ico">💧</div>
-        <h3>Liquidity-aware by default</h3>
-        <p>It only surfaces stocks you can actually trade size in, so the plan survives contact with the real market instead of falling apart on a thin order book.</p>
-      </div>
+    <div class="grid2">
+      <div class="feat reveal"><div class="ico">⚖️</div><h3>Position sizing that respects your capital</h3><p>Exactly how many shares, capped to what you can actually afford, so a single stop-out can never blow a hole in your account. Risk a fixed, small slice of capital on every trade, automatically.</p></div>
+      <div class="feat reveal"><div class="ico">🎯</div><h3>An exit before you enter</h3><p>Every idea comes with a defined entry, target, and stop, and the reward-to-risk spelled out. No more deciding where to get out after the trade is already against you.</p></div>
+      <div class="feat reveal"><div class="ico">📊</div><h3>Conviction you can read at a glance</h3><p>One score that blends business health, the technical setup, and the market regime, so you know how much to trust an idea before you commit a rupee to it.</p></div>
+      <div class="feat reveal"><div class="ico">💧</div><h3>Liquidity-aware by default</h3><p>It only surfaces stocks you can actually trade size in, so the plan survives contact with the real market instead of falling apart on a thin order book.</p></div>
     </div>
   </section>
 
-  <!-- HOW -->
-  <section id="how">
+  <section class="band" id="how">
     <div class="sec-eyebrow reveal">How it works</div>
     <h2 class="reveal">Three checks. One decision.</h2>
     <div class="steps">
@@ -227,21 +214,54 @@
     <div class="step-out reveal">The result: a clear call, and a <b>position size you can act on.</b></div>
   </section>
 
-  <!-- STATEMENT -->
+  <section class="band" id="approach">
+    <div class="sec-eyebrow reveal">The approach</div>
+    <h2 class="reveal">Disciplined by design. Quietly rigorous under the hood.</h2>
+    <p class="sec-lede reveal">We will not pretend there is no method, and we will not hand you the recipe. The exact scoring, the weightings, and the data engineering behind a Sanket call are proprietary. What we will tell you is the discipline they all serve.</p>
+    <div class="approach reveal">
+      <div class="row">
+        <div class="pt"><span class="b">01</span><p><b>Rules, not moods.</b> Every call follows a fixed, repeatable process. No gut feel, no hot takes, no chasing whatever is trending that morning.</p></div>
+        <div class="pt"><span class="b">02</span><p><b>Tested before trusted.</b> The logic is checked against history rather than hand-tuned to look good on one chart. Discipline beats a lucky example.</p></div>
+        <div class="pt"><span class="b">03</span><p><b>Risk is the first input, not an afterthought.</b> Size and exit are decided before the idea is ever shown to you, never bolted on later.</p></div>
+        <div class="pt"><span class="b">04</span><p><b>Honest about uncertainty.</b> A conviction score is a confidence level, not a promise. Low conviction is allowed to say so, plainly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="sec-eyebrow reveal">Your data</div>
+    <h2 class="reveal">You stay in control. Always.</h2>
+    <div class="grid2">
+      <div class="feat reveal"><div class="ico">🔐</div><h3>Connected through your broker's own login</h3><p>You link your broker using its official, secure sign-in. Sanket uses that connection to show you live prices and analysis, nothing more.</p></div>
+      <div class="feat reveal"><div class="ico">✋</div><h3>It never trades for you</h3><p>Sanket shows you the plan and the exact order to place. You place every trade yourself, in your own broker. No money ever moves without you.</p></div>
+    </div>
+  </section>
+
   <section class="statement reveal">
     <h2>We sell the decision, not the dashboard.</h2>
     <p class="sec-lede">Sanket is built for people with a job, a family, and no time to stare at charts all day. Less noise, fewer screens, one honest answer: should I take this trade, and if so, how much.</p>
   </section>
 
-  <!-- HONESTY -->
-  <section class="reveal">
-    <div class="honesty">
-      <div class="k">How to read Sanket</div>
-      <p>Sanket provides educational technical analysis and risk-management tools. It is not investment advice, not a recommendation to buy or sell any security, and we are not SEBI-registered. Markets carry risk, and no method removes it. Past results never guarantee future ones. Always do your own research and consult a SEBI-registered advisor before investing.</p>
+  <section class="band" id="faq">
+    <div class="sec-eyebrow reveal">Questions</div>
+    <h2 class="reveal">The things people ask first.</h2>
+    <div class="faq-list reveal">
+      <details><summary>Is Sanket investment advice?</summary><p>No. Sanket provides educational technical analysis and risk-management tools. It is not investment advice, not a recommendation to buy or sell, and we are not SEBI-registered. You make your own decisions, and we encourage you to consult a SEBI-registered advisor before investing. See our <a href="disclosures.html">Disclosures</a>.</p></details>
+      <details><summary>Which markets and stocks does it cover?</summary><p>Indian equities listed on the exchanges, focused on liquid names you can actually trade size in. Sanket deliberately leaves out the thinly traded long tail, because a plan you cannot execute is not a plan.</p></details>
+      <details><summary>Does Sanket place trades or handle my money?</summary><p>Never. You connect your broker through its own secure login, Sanket shows you the plan and the exact order to enter, and you place it yourself. No funds move without you.</p></details>
+      <details><summary>What does the conviction score actually mean?</summary><p>It is a confidence level, blending business health, the technical setup, and the market environment into one number. Higher means the signals agree more strongly. It is never a guarantee of a result.</p></details>
+      <details><summary>What will it cost?</summary><p>We are in an early, invite-only phase and gathering our first hundred users. Pricing comes later, alongside the right regulatory structure. For now, the focus is on getting the product right.</p></details>
+      <details><summary>Who is it really for?</summary><p>Busy professionals who want to trade with discipline but cannot watch screens all day, and who would rather have one clear, risk-managed decision than a feed full of tips.</p></details>
     </div>
   </section>
 
-  <!-- FINAL CTA -->
+  <section class="band reveal">
+    <div class="honesty">
+      <div class="k">How to read Sanket</div>
+      <p>Sanket provides educational technical analysis and risk-management tools. It is not investment advice, not a recommendation to buy or sell any security, and we are not SEBI-registered. Markets carry risk, and no method removes it. Past results never guarantee future ones. Always do your own research and consult a SEBI-registered advisor before investing. Read the full <a href="disclosures.html">Disclosures</a>.</p>
+    </div>
+  </section>
+
   <section class="final reveal">
     <h2>Decide with clarity.</h2>
     <p>Join the first 100 traders shaping Sanket.</p>
@@ -253,21 +273,33 @@
 <footer>
   <div class="wrap foot">
     <div>
-      <a class="brand" href="#" style="font-size:17px"><span class="dot"></span><b>Sanket<span class="pt">.</span></b></a>
-      <div class="tag" style="margin-top:8px">Clarity before every trade</div>
+      <a class="brand" href="#top" style="font-size:17px"><span class="dot"></span>Sanket<span class="pt">.</span></a>
+      <div class="tag">Clarity before every trade</div>
     </div>
-    <div class="fine">© 2026 Sanket. Educational technical analysis only. Not investment advice and not a recommendation to buy or sell. Consult a SEBI-registered advisor before investing.</div>
+    <div>
+      <h4>Product</h4>
+      <a href="#how">How it works</a>
+      <a href="#approach">Approach</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://app.sanketai.in">Open the app</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="about.html">About</a>
+      <a href="disclosures.html">Disclosures</a>
+      <a href="mailto:hello@sanketai.in">Contact</a>
+    </div>
   </div>
+  <div class="fine">© 2026 Sanket. Educational technical analysis only. Not investment advice and not a recommendation to buy or sell. We are not SEBI-registered. Markets carry risk; past performance never guarantees future results. Consult a SEBI-registered advisor before investing.</div>
 </footer>
 
 <script>
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
-  // gentle parallax lift on the hero card
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});
   var card=document.getElementById('heroCard');
-  if(card&&window.matchMedia('(min-width:861px)').matches){
-    window.addEventListener('scroll',function(){var y=window.scrollY;if(y<700)card.style.transform='translateY('+(y*-0.04)+'px)';},{passive:true});
-  }
+  if(card&&window.matchMedia('(min-width:861px)').matches){window.addEventListener('scroll',function(){var y=window.scrollY;if(y<700)card.style.transform='translateY('+(y*-0.04)+'px)';},{passive:true});}
 </script>
 </body>
 </html>
