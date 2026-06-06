@@ -3,369 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sanket — The financial decision layer for retail investors</title>
-<meta name="description" content="Sanket turns complex market data into explainable, data-driven decisions. Not just which stock to watch, but whether to act, why, and how much.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23cbab6e'/%3E%3C/svg%3E">
+<title>Sanket — Clarity before every trade</title>
+<meta name="description" content="Sanket brings risk-management discipline to your trades: how much to risk, how many shares to buy, and exactly where to exit. Educational technical analysis, not investment advice.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23d8b25e'/%3E%3Cstop offset='1' stop-color='%2311a06f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='13' fill='url(%23g)'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0b0e; --bg-elev:#0f1116; --surface:#13151c; --surface-2:#181b21;
-    --line:#252934; --line-2:#333a48;
-    --text:#edeff3; --text-2:#a9afbd; --muted:#6b7280;
-    --gold:#cbab6e; --gold-2:#e3cf9e; --gold-soft:rgba(203,171,110,.12);
-    --up:#48d39a; --up-soft:rgba(72,211,154,.12);
-    --down:#f06a6a; --down-soft:rgba(240,106,106,.12);
-    --amber:#e8b15a;
-    --serif:'Fraunces',Georgia,serif;
-    --sans:'Hanken Grotesk',system-ui,sans-serif;
-    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --bg:#f5f3ec; --bg-2:#efece2; --surface:#ffffff; --surface-2:#faf8f2;
+    --line:#e7e2d6; --line-2:#d8d2c4;
+    --ink:#1a1c22; --text-2:#565b65; --muted:#8b8f99;
+    --gold:#b5872f; --gold-2:#caa24e; --gold-soft:rgba(181,135,47,.10);
+    --green:#11a06f; --green-2:#16c486; --green-soft:rgba(17,160,111,.12);
+    --red:#df4636;
+    --serif:'Fraunces',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --sh-sm:0 1px 3px rgba(26,28,34,.05);
+    --sh-md:0 18px 40px -22px rgba(26,28,34,.22);
+    --sh-lg:0 40px 80px -38px rgba(26,28,34,.30);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;position:relative;overflow-x:hidden}
-  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:
-      radial-gradient(120% 55% at 50% -8%, rgba(203,171,110,.12), transparent 55%),
-      radial-gradient(90% 45% at 88% 4%, rgba(72,211,154,.06), transparent 52%),
-      radial-gradient(70% 50% at 8% 96%, rgba(203,171,110,.05), transparent 55%);}
-  body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden;position:relative}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(80% 50% at 82% -8%, rgba(216,178,94,.22), transparent 55%),radial-gradient(70% 45% at 2% 6%, rgba(17,160,111,.10), transparent 52%)}
   .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 28px}
-  a{color:inherit;text-decoration:none}
   .mono{font-family:var(--mono)}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
-  .serif{font-family:var(--serif)}
+  a{color:inherit;text-decoration:none}
 
   /* nav */
-  nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(10,11,14,.6);border-bottom:1px solid var(--line)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
-  .brand-name{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:.02em}
-  .brand-name span{color:var(--gold)}
-  .nav-links{display:flex;align-items:center;gap:28px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--text-2)}
-  .nav-links a:hover{color:var(--text)}
-  .btn{font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;border-radius:9px;padding:10px 16px;cursor:pointer;transition:transform .2s,filter .2s,border-color .2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
-  .btn-gold{color:#16120a;background:linear-gradient(135deg,var(--gold-2),var(--gold));border:none}
-  .btn-gold:hover{filter:brightness(1.06);transform:translateY(-1px)}
-  .btn-ghost{color:var(--text);background:transparent;border:1px solid var(--line-2)}
-  .btn-ghost:hover{border-color:var(--gold);color:var(--gold-2)}
-  @media(max-width:680px){.nav-links{display:none}}
+  nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:26px 28px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:.02em}
+  .brand .dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--gold-2),var(--green));box-shadow:0 0 12px rgba(17,160,111,.4)}
+  .brand b{font-weight:600}.brand .pt{color:var(--gold)}
+  .nav-cta{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--ink);color:#fff;padding:10px 18px;border-radius:9px;transition:transform .2s,box-shadow .2s}
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
 
   /* hero */
-  .hero{padding:88px 0 60px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,5.4vw,64px);line-height:1.02;letter-spacing:-.015em;margin:18px 0 0}
-  .hero h1 em{font-style:normal;color:var(--gold-2)}
-  .hero .lede{margin-top:22px;font-size:17px;color:var(--text-2);max-width:48ch;line-height:1.7}
-  .hero-cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
-  .live-pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--up);background:var(--up-soft);border:1px solid rgba(72,211,154,.22);padding:6px 12px;border-radius:20px}
-  .pip{width:6px;height:6px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);animation:pip 2s ease-in-out infinite}
-  @keyframes pip{0%,100%{opacity:1}50%{opacity:.3}}
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:60px 0 40px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6vw,76px);line-height:.98;letter-spacing:-.02em;font-optical-sizing:none;font-variation-settings:'opsz' 40}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{font-size:18px;color:var(--text-2);margin-top:24px;max-width:30ch;line-height:1.65}
+  .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 26px;border-radius:11px;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s,filter .2s;display:inline-flex;align-items:center;gap:8px}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#1a1505;box-shadow:0 14px 30px -14px rgba(181,135,47,.6)}
+  .btn-gold:hover{transform:translateY(-2px);filter:brightness(1.04)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+  .btn-ghost:hover{background:var(--surface);box-shadow:var(--sh-sm)}
+  .trust{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:26px;letter-spacing:.04em}
 
-  /* signal card (hero right) */
-  .card{background:linear-gradient(180deg,var(--surface),var(--bg-elev));border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 40px 80px -50px rgba(0,0,0,.9)}
-  .sig-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-  .sig-tkr{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--text-2);border:1px solid var(--line-2);border-radius:5px;padding:3px 9px}
-  .sig-name{font-family:var(--serif);font-size:26px;font-weight:500;margin-top:12px;letter-spacing:-.01em}
-  .sig-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px}
-  .sig-price{font-family:var(--mono);font-size:26px;font-weight:500}
-  .sig-price .cur{color:var(--muted);font-size:16px}
-  .sig-chg{font-family:var(--mono);font-size:12px;color:var(--up);background:var(--up-soft);border:1px solid rgba(72,211,154,.25);padding:4px 9px;border-radius:6px}
-  .sig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:18px}
-  .sig-tile{background:var(--bg-elev);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
-  .sig-tile .k{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .sig-tile .v{font-family:var(--mono);font-size:17px;font-weight:500;margin-top:5px}
-  svg.spark{display:block;width:100%;height:96px;margin-top:16px}
-  .conv{margin-top:16px}
-  .conv-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-  .conv-row b{color:var(--up);font-weight:500}
-  .bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden}
-  .bar>span{display:block;height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,var(--up),#7ef0c0);transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
-  .sig-note{margin-top:14px;font-size:12.5px;color:var(--text-2);line-height:1.6}
-  .sig-foot{margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;display:flex;justify-content:space-between}
+  /* hero decision card */
+  .card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-2),var(--green))}
+  .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .card-tk{font-family:var(--mono);font-size:12px;color:var(--text-2);letter-spacing:.06em}
+  .badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:var(--green-soft);border:1px solid rgba(17,160,111,.3);padding:5px 10px;border-radius:20px}
+  .card-mid{display:flex;align-items:center;gap:22px;padding:6px 0 18px;border-bottom:1px solid var(--line)}
+  .ring{position:relative;width:112px;height:112px;flex-shrink:0}
+  .ring svg{width:112px;height:112px}
+  .ring .fill{stroke-dasharray:301.6;stroke-dashoffset:301.6;animation:fill 1.5s cubic-bezier(.2,.7,.2,1) .4s forwards}
+  @keyframes fill{to{stroke-dashoffset:51}}
+  .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num b{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--green);line-height:1}
+  .ring .num span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;margin-top:2px}
+  .verdict .v{font-family:var(--serif);font-weight:600;font-size:21px;color:var(--green);letter-spacing:-.01em}
+  .verdict p{font-size:13px;color:var(--text-2);margin-top:6px;line-height:1.5}
+  .levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+  .lvl{text-align:left}
+  .lvl .k{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .lvl .v{font-family:var(--mono);font-size:16px;font-weight:600;margin-top:5px}
+  .size{margin-top:18px;background:var(--gold-soft);border:1px solid rgba(181,135,47,.22);border-radius:12px;padding:13px 16px}
+  .size .k{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+  .size .v{font-family:var(--mono);font-size:14px;font-weight:600;margin-top:5px;color:var(--ink)}
+  .size .v b{color:var(--gold)}
 
-  /* section scaffolding */
-  section{padding:64px 0;position:relative}
-  .sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:26px}
-  .sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
-  h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.08;letter-spacing:-.01em}
-  .sub{color:var(--text-2);font-size:16px;max-width:60ch;margin-top:14px;line-height:1.7}
+  /* sections */
+  section{padding:56px 0;position:relative;z-index:1}
+  .sec-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.018em;max-width:18ch;font-optical-sizing:none;font-variation-settings:'opsz' 32}
+  .sec-lede{font-size:17px;color:var(--text-2);margin-top:18px;max-width:56ch;line-height:1.7}
 
-  /* the shift */
-  .shift{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
-  .shift-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;transition:transform .25s,border-color .25s}
-  .shift-card:hover{transform:translateY(-4px);border-color:var(--line-2)}
-  .shift-card .from{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-  .shift-card .to{font-family:var(--serif);font-size:21px;margin-top:10px;line-height:1.25}
-  .shift-card .to b{color:var(--gold-2);font-weight:600}
-  .shift-card p{color:var(--text-2);font-size:13.5px;margin-top:12px;line-height:1.65}
+  .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
+  .feat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--sh-sm);transition:transform .3s,box-shadow .3s}
+  .feat:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+  .feat .ico{font-size:22px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+  .feat h3{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em;margin-bottom:8px}
+  .feat p{font-size:14px;color:var(--text-2);line-height:1.6}
 
-  /* live focus section */
-  .focus{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-  .why-list{margin-top:24px;display:flex;flex-direction:column;gap:18px}
-  .why{display:flex;gap:14px}
-  .why-n{font-family:var(--mono);font-size:12px;color:var(--gold-2);border:1px solid rgba(203,171,110,.35);border-radius:8px;width:30px;height:30px;display:grid;place-items:center;flex-shrink:0}
-  .why h4{font-family:var(--sans);font-size:15px;font-weight:600}
-  .why p{color:var(--text-2);font-size:13.5px;margin-top:3px;line-height:1.6}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .step{position:relative;padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-sm)}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.1em}
+  .step h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:10px 0 6px}
+  .step p{font-size:13.5px;color:var(--text-2);line-height:1.6}
+  .step-out{margin-top:22px;text-align:center;font-family:var(--serif);font-size:20px;color:var(--ink)}
+  .step-out b{color:var(--green)}
 
-  /* moat tiles */
-  .moat{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
-  .moat-card{background:linear-gradient(180deg,var(--surface),var(--bg-elev));border:1px solid var(--line);border-radius:16px;padding:26px;transition:transform .25s,border-color .25s,box-shadow .25s}
-  .moat-card:hover{transform:translateY(-4px);border-color:var(--line-2);box-shadow:0 24px 50px -30px rgba(0,0,0,.8)}
-  .moat-card .ic{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase}
-  .moat-card h3{font-family:var(--serif);font-weight:500;font-size:23px;margin-top:12px;letter-spacing:-.01em}
-  .moat-card p{color:var(--text-2);font-size:14px;margin-top:10px;line-height:1.7}
+  .statement{text-align:center;padding:80px 0}
+  .statement h2{margin:0 auto;max-width:24ch;font-size:clamp(32px,4.4vw,52px)}
+  .statement .sec-lede{margin:22px auto 0}
 
-  /* who */
-  .who{background:linear-gradient(135deg,var(--surface-2),var(--bg-elev));border:1px solid var(--line);border-radius:20px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;margin-top:8px}
-  .who ul{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:12px}
-  .who li{display:flex;gap:11px;align-items:flex-start;color:var(--text-2);font-size:14.5px}
-  .who li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gold);margin-top:9px;flex-shrink:0;box-shadow:0 0 8px var(--gold)}
-  .who-quote{font-family:var(--serif);font-size:24px;line-height:1.4;color:var(--text)}
-  .who-quote span{color:var(--gold-2)}
+  .honesty{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:26px 28px;box-shadow:var(--sh-sm)}
+  .honesty .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .honesty p{font-size:13.5px;color:var(--text-2);line-height:1.7;max-width:80ch}
 
-  /* vision outcomes */
-  .vision{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
-  .vcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;border-top:2px solid var(--gold)}
-  .vcard:nth-child(2){border-top-color:var(--up)}
-  .vcard:nth-child(3){border-top-color:var(--amber)}
-  .vcard .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
-  .vcard h4{font-family:var(--serif);font-weight:500;font-size:20px;margin-top:8px}
-  .vcard p{color:var(--text-2);font-size:13.5px;margin-top:10px;line-height:1.65}
-  .vision-line{font-family:var(--serif);font-size:clamp(24px,3vw,34px);line-height:1.35;margin-top:40px;max-width:24ch}
-  .vision-line span{color:var(--gold-2)}
+  .final{text-align:center;padding:90px 0 70px}
+  .final h2{margin:0 auto 8px;font-size:clamp(38px,5vw,64px)}
+  .final p{color:var(--text-2);font-size:17px;margin-bottom:30px}
 
-  /* cta band */
-  .cta{text-align:center;padding:80px 0}
-  .cta h2{margin:0 auto}
-  .cta .sub{margin:16px auto 0}
-  .cta .row{margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  footer{border-top:1px solid var(--line);padding:34px 0;margin-top:20px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+  .foot .fine{font-size:11px;color:var(--muted);max-width:60ch;line-height:1.6}
 
-  footer{border-top:1px solid var(--line);padding:34px 0 60px}
-  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
-  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:12px;color:var(--text-2)}
-  .foot-links a:hover{color:var(--gold-2)}
-  .disclaimer{margin-top:22px;font-size:11.5px;color:var(--muted);line-height:1.7;max-width:80ch;font-family:var(--mono);letter-spacing:.01em}
-
-  /* reveal on scroll */
-  .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
   @media(max-width:860px){
-    .hero{grid-template-columns:1fr;gap:36px;padding-top:56px}
-    .shift,.vision{grid-template-columns:1fr}
-    .focus,.who{grid-template-columns:1fr}
-    .moat{grid-template-columns:1fr}
-    .who{padding:28px}
+    .hero{grid-template-columns:1fr;gap:34px;padding:32px 0}
+    .feature-grid,.steps{grid-template-columns:1fr}
+    h1{font-size:clamp(40px,11vw,60px)}
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="wrap nav-in">
-    <a class="brand" href="#top"><span class="brand-dot"></span><span class="brand-name">Sanket<span>.</span></span></a>
-    <div class="nav-links">
-      <a href="#shift">Why Sanket</a>
-      <a href="#focus">Live signal</a>
-      <a href="#vision">The vision</a>
-    </div>
-    <a class="btn btn-gold" href="https://app.sanketai.in">Open the app &#8594;</a>
-  </div>
+  <a class="brand" href="#"><span class="dot"></span><b>Sanket<span class="pt">.</span></b></a>
+  <a class="nav-cta" href="https://app.sanketai.in">Open the app →</a>
 </nav>
 
-<div id="top"></div>
+<div class="wrap">
 
-<!-- HERO -->
-<header class="wrap hero">
-  <div>
-    <span class="live-pill"><span class="pip"></span> Live · NSE swing signals</span>
-    <h1>Clarity before<br>every <em>trade.</em></h1>
-    <p class="lede">Millions invest on noise, emotion and social media tips. Sanket turns complex market data into explainable, data-driven decisions, so you know not just which stock to watch, but whether to act, why, and how much.</p>
-    <div class="hero-cta">
-      <a class="btn btn-gold" href="https://app.sanketai.in">Open the app &#8594;</a>
-      <a class="btn btn-ghost" href="#focus">See a live signal</a>
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Risk-first trading intelligence</div>
+      <h1>Clarity before <em>every</em> trade.</h1>
+      <p class="lede">Sanket tells you not just what to look at, but how much to risk, how many shares to buy, and exactly where to exit. The discipline of a professional risk desk, in your pocket.</p>
+      <div class="cta-row">
+        <a class="btn btn-gold" href="https://app.sanketai.in">Join the first 100 →</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <div class="trust">Educational technical analysis · Not investment advice</div>
     </div>
-  </div>
 
-  <!-- SIGNAL IN FOCUS card -->
-  <div class="card reveal" id="sigcard">
-    <div class="sig-head">
-      <span class="sig-tkr">RELIANCE · NSE</span>
-      <span class="live-pill"><span class="pip"></span> Live</span>
-    </div>
-    <div class="sig-name">Reliance Industries</div>
-    <div class="sig-row">
-      <div class="sig-price"><span class="cur">&#8377;</span>1,432.60</div>
-      <span class="sig-chg">&#9650; +1.81% today</span>
-    </div>
-    <svg class="spark" id="spark" viewBox="0 0 520 96" preserveAspectRatio="none" aria-hidden="true"></svg>
-    <div class="sig-grid">
-      <div class="sig-tile"><div class="k">Conviction</div><div class="v" style="color:var(--gold-2)">86</div></div>
-      <div class="sig-tile"><div class="k">RSI</div><div class="v" style="color:var(--up)">41.2</div></div>
-      <div class="sig-tile"><div class="k">Health</div><div class="v" style="color:var(--up)">78</div></div>
-    </div>
-    <div class="conv">
-      <div class="conv-row"><span>Signal confidence</span><b>High conviction</b></div>
-      <div class="bar"><span id="convbar"></span></div>
-    </div>
-    <div class="sig-note">Strong-fundamentals large cap pulling back into an oversold bounce zone while momentum quietly turns up. Enter near support, let the target do the work.</div>
-    <div class="sig-foot"><span>Entry &#8377;1,432 · Target &#8377;1,548 · Stop &#8377;1,372</span><span>R:R 1.9 : 1</span></div>
-  </div>
-</header>
-
-<!-- THE SHIFT -->
-<section id="shift" class="wrap">
-  <div class="sec-label reveal">The shift</div>
-  <h2 class="reveal">Most apps help you find stocks.<br>Sanket helps you decide what to do.</h2>
-  <p class="sub reveal">You do not care about RSI, MACD or moving averages. You care about one thing: can I trust this opportunity? The technology supports the decision. It is never the headline.</p>
-  <div class="shift">
-    <div class="shift-card reveal">
-      <div class="from">Screener &#8594;</div>
-      <div class="to">A <b>decision</b>, not a list</div>
-      <p>A screener spits out tickers. Sanket reads the setup and tells you whether it is worth acting on at all.</p>
-    </div>
-    <div class="shift-card reveal">
-      <div class="from">Prediction &#8594;</div>
-      <div class="to">A <b>decision engine</b></div>
-      <p>Not "this stock will go up." Instead: here is the opportunity, the risk, the rationale, and the position size. More honest, more defensible.</p>
-    </div>
-    <div class="shift-card reveal">
-      <div class="from">Buy signal &#8594;</div>
-      <div class="to">A <b>conviction score</b></div>
-      <p>Not "BUY XYZ." Instead, why this setup scores high, and exactly where it would fall apart. Easier to trust, harder to fake.</p>
-    </div>
-  </div>
-</section>
-
-<!-- LIVE FOCUS -->
-<section id="focus" class="wrap">
-  <div class="sec-label reveal">Signal in focus</div>
-  <div class="focus">
-    <div class="reveal">
-      <h2>One strategy,<br>working in the open.</h2>
-      <p class="sub">The swing setup above is Sanket's most consistent edge: a quality business, caught on a pullback, with risk defined before you enter. Here is why it holds up, not as a promise, but as a process.</p>
-      <div class="why-list">
-        <div class="why"><div class="why-n">01</div><div><h4>Quality filter first</h4><p>The setup only fires on businesses with strong fundamentals. You are never chasing a technical bounce on a weak company.</p></div></div>
-        <div class="why"><div class="why-n">02</div><div><h4>Buy the pullback, not the hype</h4><p>It waits for price to fall into an oversold zone near support. You enter where others panic, not where everyone is already crowded in.</p></div></div>
-        <div class="why"><div class="why-n">03</div><div><h4>Momentum must confirm</h4><p>MACD has to be turning up before the call goes high-conviction. Cheap is not enough; the turn has to be starting.</p></div></div>
-        <div class="why"><div class="why-n">04</div><div><h4>Risk is decided before the trade</h4><p>Every signal ships with an entry, a stop, a target and a position size based on your risk per trade. The downside is known before the upside is hoped for.</p></div></div>
+    <div class="card" id="heroCard">
+      <div class="card-top">
+        <span class="card-tk">RELIANCE · NSE · Swing</span>
+        <span class="badge">High conviction</span>
+      </div>
+      <div class="card-mid">
+        <div class="ring">
+          <svg viewBox="0 0 112 112">
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16c486"/><stop offset="1" stop-color="#11a06f"/></linearGradient></defs>
+            <circle cx="56" cy="56" r="48" fill="none" stroke="#e7e2d6" stroke-width="9"/>
+            <circle class="fill" cx="56" cy="56" r="48" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 56 56)"/>
+          </svg>
+          <div class="num"><b>83</b><span>/ 100</span></div>
+        </div>
+        <div class="verdict">
+          <div class="v">Proceed, sized right</div>
+          <p>Signals aligned. Here is the plan, the exit, and the exact size for your capital.</p>
+        </div>
+      </div>
+      <div class="levels">
+        <div class="lvl"><div class="k">Entry</div><div class="v">₹1,432</div></div>
+        <div class="lvl"><div class="k">Target</div><div class="v" style="color:var(--green)">₹1,548</div></div>
+        <div class="lvl"><div class="k">Stop</div><div class="v" style="color:var(--red)">₹1,372</div></div>
+        <div class="lvl"><div class="k">R : R</div><div class="v" style="color:var(--gold)">1.9 : 1</div></div>
+      </div>
+      <div class="size">
+        <div class="k">Position size · capped to your capital</div>
+        <div class="v">₹5,00,000 capital → <b>83 shares</b> · max loss ₹4,980 (1.0%)</div>
       </div>
     </div>
-    <div class="card reveal">
-      <div class="sec-label" style="margin-bottom:18px">How it reads</div>
-      <div class="sig-grid" style="grid-template-columns:1fr 1fr">
-        <div class="sig-tile"><div class="k">Strategy</div><div class="v" style="font-size:14px">Swing · 7d</div></div>
-        <div class="sig-tile"><div class="k">Setup</div><div class="v" style="font-size:14px;color:var(--gold-2)">Oversold + quality</div></div>
-        <div class="sig-tile"><div class="k">MACD</div><div class="v" style="color:var(--up)">Bullish</div></div>
-        <div class="sig-tile"><div class="k">Liquidity</div><div class="v" style="font-size:14px">&#8377;312 cr/day</div></div>
+  </header>
+
+  <!-- PROBLEM -->
+  <section class="reveal">
+    <div class="sec-eyebrow">The gap</div>
+    <h2>Most apps help you find stocks. Almost none help you manage the risk.</h2>
+    <p class="sec-lede">Finding something to buy is the easy part. The part that actually decides whether you keep your money is how much you risk, how big the position is, and when you get out. That is where most retail traders get hurt, and that is exactly where Sanket begins.</p>
+  </section>
+
+  <!-- CORE -->
+  <section>
+    <div class="sec-eyebrow reveal">The core</div>
+    <h2 class="reveal">Risk management, built into every call.</h2>
+    <div class="feature-grid">
+      <div class="feat reveal">
+        <div class="ico">⚖️</div>
+        <h3>Position sizing that respects your capital</h3>
+        <p>Exactly how many shares, capped to what you can actually afford, so a single stop-out can never blow a hole in your account. Risk a fixed, small slice of capital on every trade, automatically.</p>
       </div>
-      <div class="sig-note" style="margin-top:18px">"A high-conviction setup. Enter near support, size it so a stop-out costs you a fixed, small slice of capital, and let the target do the work over one to two weeks."</div>
-      <div class="sig-foot"><span>Plain-English call from the engine</span><span>Conviction 86%</span></div>
+      <div class="feat reveal">
+        <div class="ico">🎯</div>
+        <h3>An exit before you enter</h3>
+        <p>Every idea comes with a defined entry, target, and stop, and the reward-to-risk spelled out. No more deciding where to get out after the trade is already against you.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ico">📊</div>
+        <h3>Conviction you can read at a glance</h3>
+        <p>One score that blends business health, the technical setup, and the market regime, so you know how much to trust an idea before you commit a rupee to it.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ico">💧</div>
+        <h3>Liquidity-aware by default</h3>
+        <p>It only surfaces stocks you can actually trade size in, so the plan survives contact with the real market instead of falling apart on a thin order book.</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- MOAT -->
-<section class="wrap">
-  <div class="sec-label reveal">Why it is defensible</div>
-  <h2 class="reveal">Anyone can find opportunities.<br>Almost no one protects capital.</h2>
-  <div class="moat">
-    <div class="moat-card reveal"><div class="ic">Clarity, not indicators</div><h3>We sell the decision, not the dashboard</h3><p>The numbers stay under the hood. What surfaces is a judgement you can act on, in language you already speak.</p></div>
-    <div class="moat-card reveal"><div class="ic">Risk is the moat</div><h3>Position sizing built in</h3><p>Most retail tools stop at "here's a stock." Sanket tells you how many shares to buy so one bad trade never breaks you. That discipline is the real product.</p></div>
-    <div class="moat-card reveal"><div class="ic">Data sets the weights</div><h3>Backtested, not hand-tuned</h3><p>We do not guess that fundamentals matter 35 percent. Historical performance decides which factors earn their place in the score.</p></div>
-    <div class="moat-card reveal"><div class="ic">Transparent by design</div><h3>A track record you can check</h3><p>Every call is explainable and reviewable. Trust is earned with a record that holds up, not with louder promises.</p></div>
-  </div>
-</section>
-
-<!-- WHO -->
-<section class="wrap">
-  <div class="sec-label reveal">Who it is for</div>
-  <div class="who reveal">
-    <div>
-      <div class="who-quote">Built first for the person who earns well, wants market exposure, and <span>does not have time to study charts.</span></div>
+  <!-- HOW -->
+  <section id="how">
+    <div class="sec-eyebrow reveal">How it works</div>
+    <h2 class="reveal">Three checks. One decision.</h2>
+    <div class="steps">
+      <div class="step reveal"><div class="n">01</div><h3>Is the business sound?</h3><p>Financial health first. Strong fundamentals under the chart, not just a pretty pattern.</p></div>
+      <div class="step reveal"><div class="n">02</div><h3>Is the setup right?</h3><p>The technical picture: momentum, trend, and where price sits relative to its range.</p></div>
+      <div class="step reveal"><div class="n">03</div><h3>Is the market on your side?</h3><p>The wider regime. Even good setups fail when the whole market is fighting you.</p></div>
     </div>
-    <div>
-      <ul>
-        <li>Not day traders. Not quants. Not chart experts.</li>
-        <li>Professionals who want a clear, defensible decision in minutes.</li>
-        <li>People who would rather know the risk than chase the tip.</li>
-        <li>Investors who want institutional discipline without the institution.</li>
-      </ul>
+    <div class="step-out reveal">The result: a clear call, and a <b>position size you can act on.</b></div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement reveal">
+    <h2>We sell the decision, not the dashboard.</h2>
+    <p class="sec-lede">Sanket is built for people with a job, a family, and no time to stare at charts all day. Less noise, fewer screens, one honest answer: should I take this trade, and if so, how much.</p>
+  </section>
+
+  <!-- HONESTY -->
+  <section class="reveal">
+    <div class="honesty">
+      <div class="k">How to read Sanket</div>
+      <p>Sanket provides educational technical analysis and risk-management tools. It is not investment advice, not a recommendation to buy or sell any security, and we are not SEBI-registered. Markets carry risk, and no method removes it. Past results never guarantee future ones. Always do your own research and consult a SEBI-registered advisor before investing.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- VISION -->
-<section id="vision" class="wrap">
-  <div class="sec-label reveal">The long-term vision</div>
-  <h2 class="reveal">Better decisions, made at scale,<br>move capital where it belongs.</h2>
-  <p class="sub reveal">When everyday investors decide with clarity instead of noise, the effect compounds well beyond any single portfolio.</p>
-  <div class="vision">
-    <div class="vcard reveal"><div class="n">01</div><h4>Better capital allocation</h4><p>Money flows toward fundamentally stronger businesses instead of short-term speculation, helping productive companies attract investment.</p></div>
-    <div class="vcard reveal"><div class="n">02</div><h4>Improved outcomes</h4><p>Investors act with clarity, discipline and risk awareness, cutting costly mistakes and improving long-term wealth creation.</p></div>
-    <div class="vcard reveal"><div class="n">03</div><h4>Democratized intelligence</h4><p>Professional-grade research and risk tools reach people who would otherwise never have access to them.</p></div>
-  </div>
-  <div class="vision-line reveal">The biggest version of Sanket is not an AI stock picker. It is <span>the financial decision layer for retail investors</span>, the place you ask what to do with your money and get an answer backed by data, risk and context.</div>
-</section>
+  <!-- FINAL CTA -->
+  <section class="final reveal">
+    <h2>Decide with clarity.</h2>
+    <p>Join the first 100 traders shaping Sanket.</p>
+    <a class="btn btn-gold" href="https://app.sanketai.in" style="font-size:16px;padding:16px 32px">Join the first 100 →</a>
+  </section>
 
-<!-- CTA -->
-<section class="cta wrap">
-  <h2 class="reveal">Decide with clarity.</h2>
-  <p class="sub reveal">Open Sanket and read a live setup the way the engine does, the opportunity, the risk, the rationale, and the size.</p>
-  <div class="row reveal">
-    <a class="btn btn-gold" href="https://app.sanketai.in">Open the app &#8594;</a>
-    <a class="btn btn-ghost" href="#top">Back to top</a>
-  </div>
-</section>
+</div>
 
 <footer>
-  <div class="wrap">
-    <div class="foot-in">
-      <a class="brand" href="#top"><span class="brand-dot"></span><span class="brand-name">Sanket<span>.</span></span></a>
-      <div class="foot-links">
-        <a href="https://app.sanketai.in">App</a>
-        <a href="#focus">Live signal</a>
-        <a href="#vision">Vision</a>
-        <a href="mailto:samad@sanketai.in">Contact</a>
-      </div>
+  <div class="wrap foot">
+    <div>
+      <a class="brand" href="#" style="font-size:17px"><span class="dot"></span><b>Sanket<span class="pt">.</span></b></a>
+      <div class="tag" style="margin-top:8px">Clarity before every trade</div>
     </div>
-    <div class="disclaimer">
-      Sanket is a research and decision-support tool for educational purposes. It is not investment advice and not a recommendation to buy or sell any security. Figures shown on this page are illustrative of how the engine reasons, not a guaranteed or past return. Markets carry risk, including loss of capital. Do your own research and consult a SEBI-registered advisor before investing. &copy; <span id="yr"></span> Sanket.
-    </div>
+    <div class="fine">© 2026 Sanket. Educational technical analysis only. Not investment advice and not a recommendation to buy or sell. Consult a SEBI-registered advisor before investing.</div>
   </div>
 </footer>
 
 <script>
-  document.getElementById('yr').textContent = new Date().getFullYear();
-
-  // elegant area sparkline: pullback then turn up
-  (function(){
-    var svg=document.getElementById('spark'); if(!svg)return;
-    var W=520,H=96,pad=6;
-    var v=[60,58,62,66,64,69,73,71,67,62,57,53,49,46,44,47,45,43,47,51,50,55,59,57,62,66,64,69,74,72,78];
-    var min=Math.min.apply(null,v),max=Math.max.apply(null,v),n=v.length,dx=(W-pad*2)/(n-1);
-    var pts=v.map(function(val,i){return [pad+i*dx, pad+(1-(val-min)/(max-min))*(H-pad*2)];});
-    function smooth(p){var d='M'+p[0][0]+','+p[0][1];for(var i=0;i<p.length-1;i++){var x0=p[i][0],y0=p[i][1],x1=p[i+1][0],y1=p[i+1][1],mx=(x0+x1)/2;d+=' C'+mx+','+y0+' '+mx+','+y1+' '+x1+','+y1;}return d;}
-    var line=smooth(pts),area=line+' L'+pts[n-1][0]+','+(H-pad)+' L'+pts[0][0]+','+(H-pad)+' Z',last=pts[n-1];
-    svg.innerHTML='<defs>'
-      +'<linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(72,211,154,.30)"/><stop offset="100%" stop-color="rgba(72,211,154,0)"/></linearGradient>'
-      +'<linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#48d39a"/><stop offset="100%" stop-color="#cbab6e"/></linearGradient>'
-      +'</defs>'
-      +'<path d="'+area+'" fill="url(#fill)"/>'
-      +'<path d="'+line+'" fill="none" stroke="url(#stroke)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1400" stroke-dashoffset="1400"><animate attributeName="stroke-dashoffset" from="1400" to="0" dur="1.6s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.2 0.7 0.2 1" keyTimes="0;1" values="1400;0"/></path>'
-      +'<circle cx="'+last[0]+'" cy="'+last[1]+'" r="4.5" fill="#cbab6e"/>'
-      +'<circle cx="'+last[0]+'" cy="'+last[1]+'" r="9" fill="none" stroke="rgba(203,171,110,.4)"><animate attributeName="r" from="5" to="13" dur="1.8s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.6" to="0" dur="1.8s" begin="1.6s" repeatCount="indefinite"/></circle>';
-  })();
-
-  // reveal on scroll
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
-
-  // hero card is in view immediately -> fill conviction bar
-  setTimeout(function(){var b=document.getElementById('convbar');if(b)b.style.width='86%';},500);
+  // gentle parallax lift on the hero card
+  var card=document.getElementById('heroCard');
+  if(card&&window.matchMedia('(min-width:861px)').matches){
+    window.addEventListener('scroll',function(){var y=window.scrollY;if(y<700)card.style.transform='translateY('+(y*-0.04)+'px)';},{passive:true});
+  }
 </script>
 </body>
 </html>
