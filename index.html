@@ -135,6 +135,28 @@
     .nav-links a:not(.nav-cta){display:none}
     h1{font-size:clamp(40px,11vw,60px)}
   }
+
+  /* Join / waitlist modal */
+  .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(26,28,34,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+  .modal-overlay.open{display:flex}
+  .modal{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh-lg);width:100%;max-width:460px;position:relative;overflow:hidden;max-height:92vh;overflow-y:auto}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-2),var(--green));z-index:1}
+  .modal-in{padding:32px 30px 28px}
+  .modal-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;transition:color .2s;z-index:2}
+  .modal-x:hover{color:var(--ink)}
+  .modal h3{font-family:var(--serif);font-weight:600;font-size:26px;letter-spacing:-.01em;margin-bottom:6px}
+  .modal .sub{font-size:14px;color:var(--text-2);margin-bottom:22px;line-height:1.55}
+  .field{margin-bottom:15px}
+  .field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .field input,.field select,.field textarea{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .field textarea{resize:vertical;min-height:64px}
+  .modal .btn-gold{width:100%;justify-content:center;margin-top:8px}
+  .modal .err{color:var(--red);font-size:13px;margin-top:12px;display:none}
+  .modal-done{text-align:center;padding:48px 30px}
+  .modal-done .ico{font-size:40px;color:var(--green);margin-bottom:12px}
+  .modal-done h3{font-family:var(--serif);font-weight:600;font-size:26px;margin-bottom:8px}
+  .modal-done p{font-size:14.5px;color:var(--text-2);line-height:1.6;max-width:34ch;margin:0 auto}
 </style>
 </head>
 <body>
@@ -147,7 +169,7 @@
       <a href="#approach">Approach</a>
       <a href="#faq">FAQ</a>
       <a href="about.html">About</a>
-      <a class="nav-cta" href="https://app.sanketai.in">Open the app →</a>
+      <a class="nav-cta" href="#join" onclick="openJoin();return false">Request access →</a>
     </div>
   </div>
 </nav>
@@ -160,7 +182,7 @@
       <h1>Clarity before <em>every</em> trade.</h1>
       <p class="lede">Sanket tells you not just what to look at, but how much to risk, how many shares to buy, and exactly where to exit. The discipline of a professional risk desk, in your pocket.</p>
       <div class="cta-row">
-        <a class="btn btn-gold" href="https://app.sanketai.in">Join the first 100 →</a>
+        <a class="btn btn-gold" href="#join" onclick="openJoin();return false">Join the first 50 →</a>
         <a class="btn btn-ghost" href="#how">See how it works</a>
       </div>
       <div class="trust-line">Educational technical analysis · Not investment advice</div>
@@ -264,8 +286,8 @@
 
   <section class="final reveal">
     <h2>Decide with clarity.</h2>
-    <p>Join the first 100 traders shaping Sanket.</p>
-    <a class="btn btn-gold" href="https://app.sanketai.in" style="font-size:16px;padding:16px 32px">Join the first 100 →</a>
+    <p>Join the first 50 traders shaping Sanket.</p>
+    <a class="btn btn-gold" href="#join" onclick="openJoin();return false" style="font-size:16px;padding:16px 32px">Join the first 50 →</a>
   </section>
 
 </div>
@@ -281,7 +303,7 @@
       <a href="#how">How it works</a>
       <a href="#approach">Approach</a>
       <a href="#faq">FAQ</a>
-      <a href="https://app.sanketai.in">Open the app</a>
+      <a href="#join" onclick="openJoin();return false">Join the beta</a>
     </div>
     <div>
       <h4>Company</h4>
@@ -293,6 +315,33 @@
   <div class="fine">© 2026 Sanket. Educational technical analysis only. Not investment advice and not a recommendation to buy or sell. We are not SEBI-registered. Markets carry risk; past performance never guarantees future results. Consult a SEBI-registered advisor before investing.</div>
 </footer>
 
+<div class="modal-overlay" id="joinModal" onclick="if(event.target===this)closeJoin()">
+  <div class="modal">
+    <button class="modal-x" onclick="closeJoin()" aria-label="Close">×</button>
+    <div class="modal-in" id="joinForm">
+      <h3>Join the first 50</h3>
+      <p class="sub">We're onboarding 50 founding traders. Leave your details and we'll reach out as we open access.</p>
+      <div class="field"><label>Name</label><input id="jf-name" type="text" placeholder="Your name" autocomplete="name"></div>
+      <div class="field"><label>Email</label><input id="jf-email" type="email" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="field"><label>Phone / WhatsApp</label><input id="jf-phone" type="tel" placeholder="+91…" autocomplete="tel"></div>
+      <div class="field"><label>Trading experience</label><select id="jf-exp">
+        <option value="">Select…</option>
+        <option value="new">New to trading</option>
+        <option value="1-3y">1–3 years</option>
+        <option value="3y+">3+ years</option>
+      </select></div>
+      <div class="field"><label>What are you hoping Sanket helps with? (optional)</label><textarea id="jf-goal" placeholder="e.g. sizing my trades, managing risk…"></textarea></div>
+      <button class="btn btn-gold" onclick="submitJoin()" id="jf-submit">Request access →</button>
+      <div class="err" id="jf-err"></div>
+    </div>
+    <div class="modal-done" id="joinDone" style="display:none">
+      <div class="ico">✓</div>
+      <h3>You're on the list</h3>
+      <p>Thanks for joining. We'll be in touch as we open up access to the first 50.</p>
+    </div>
+  </div>
+</div>
+
 <script>
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
@@ -300,6 +349,38 @@
   window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});
   var card=document.getElementById('heroCard');
   if(card&&window.matchMedia('(min-width:861px)').matches){window.addEventListener('scroll',function(){var y=window.scrollY;if(y<700)card.style.transform='translateY('+(y*-0.04)+'px)';},{passive:true});}
+
+  // Join / waitlist
+  var SB_URL='https://ozygkqdvglllvluvqevf.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96eWdrcWR2Z2xsbHZsdXZxZXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk1MzEsImV4cCI6MjA5NDY2NTUzMX0.ukLijBc2Sk4BxKgzxtUqB6f9Zu4iznlfkMV-PBKZK8w';
+  function openJoin(){document.getElementById('joinModal').classList.add('open');document.body.style.overflow='hidden';}
+  function closeJoin(){document.getElementById('joinModal').classList.remove('open');document.body.style.overflow='';}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeJoin();});
+  if(location.hash==='#join'){setTimeout(openJoin,250);}
+  async function submitJoin(){
+    var name=document.getElementById('jf-name').value.trim();
+    var email=document.getElementById('jf-email').value.trim();
+    var phone=document.getElementById('jf-phone').value.trim();
+    var exp=document.getElementById('jf-exp').value;
+    var goal=document.getElementById('jf-goal').value.trim();
+    var err=document.getElementById('jf-err');
+    err.style.display='none';
+    if(!name||!email){err.textContent='Please enter your name and email.';err.style.display='block';return;}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent='Please enter a valid email address.';err.style.display='block';return;}
+    var btn=document.getElementById('jf-submit');btn.textContent='Sending…';btn.disabled=true;
+    try{
+      var r=await fetch(SB_URL+'/rest/v1/beta_signups',{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({name:name,email:email,phone:phone,experience:exp,goal:goal})
+      });
+      if(r.ok){document.getElementById('joinForm').style.display='none';document.getElementById('joinDone').style.display='block';}
+      else{throw new Error('status '+r.status);}
+    }catch(e){
+      err.textContent='Something went wrong. Please email hello@sanketai.in and we will add you.';
+      err.style.display='block';btn.textContent='Request access →';btn.disabled=false;
+    }
+  }
 </script>
 </body>
 </html>
