@@ -157,6 +157,20 @@
   .modal-done .ico{font-size:40px;color:var(--green);margin-bottom:12px}
   .modal-done h3{font-family:var(--serif);font-weight:600;font-size:26px;margin-bottom:8px}
   .modal-done p{font-size:14.5px;color:var(--text-2);line-height:1.6;max-width:34ch;margin:0 auto}
+
+  /* interactive sizer controls (added) */
+  .hero-right{display:flex;flex-direction:column;gap:14px}
+  .sizer-ctrl{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:16px;padding:15px 16px;box-shadow:var(--sh-md)}
+  .sizer-ctrl .hd{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:11px}
+  .stks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+  .stk{font-family:var(--mono);font-size:11px;letter-spacing:.02em;padding:8px 2px;border:1px solid var(--line-2);border-radius:8px;background:transparent;color:var(--text-2);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .stk[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+  .sld{margin-top:11px}
+  .sld .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .sld .lab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .sld .val{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink)}
+  .sld .val small{font-weight:400;color:var(--text-2)}
+  .sld input[type=range]{width:100%;accent-color:var(--green);height:20px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -187,24 +201,38 @@
       </div>
       <div class="trust-line">Educational technical analysis · Not investment advice</div>
     </div>
+    <div class="hero-right">
     <div class="card" id="heroCard">
-      <div class="card-top"><span class="card-tk">RELIANCE · NSE · Swing</span><span class="badge">High conviction</span></div>
+      <div class="card-top"><span class="card-tk" id="szSym">RELIANCE · NSE · Swing</span><span class="badge" id="szBadge">High conviction</span></div>
       <div class="card-mid">
         <div class="ring">
           <svg viewBox="0 0 112 112"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16c486"/><stop offset="1" stop-color="#11a06f"/></linearGradient></defs>
           <circle cx="56" cy="56" r="48" fill="none" stroke="#e7e2d6" stroke-width="9"/>
-          <circle class="fill" cx="56" cy="56" r="48" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 56 56)"/></svg>
-          <div class="num"><b>83</b><span>/ 100</span></div>
+          <circle class="fill" id="szFill" cx="56" cy="56" r="48" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 56 56)"/></svg>
+          <div class="num"><b id="szScore">83</b><span>/ 100</span></div>
         </div>
-        <div class="verdict"><div class="v">Proceed, sized right</div><p>Signals aligned. Here is the plan, the exit, and the exact size for your capital.</p></div>
+        <div class="verdict"><div class="v" id="szVerdict">Proceed, sized right</div><p id="szVerdictP">Signals aligned. Here is the plan, the exit, and the exact size for your capital.</p></div>
       </div>
       <div class="levels">
-        <div class="lvl"><div class="k">Entry</div><div class="v">₹1,432</div></div>
-        <div class="lvl"><div class="k">Target</div><div class="v" style="color:var(--green)">₹1,548</div></div>
-        <div class="lvl"><div class="k">Stop</div><div class="v" style="color:var(--red)">₹1,372</div></div>
-        <div class="lvl"><div class="k">R : R</div><div class="v" style="color:var(--gold)">1.9 : 1</div></div>
+        <div class="lvl"><div class="k">Entry</div><div class="v" id="szEntry">₹1,432</div></div>
+        <div class="lvl"><div class="k">Target</div><div class="v" id="szTarget" style="color:var(--green)">₹1,548</div></div>
+        <div class="lvl"><div class="k">Stop</div><div class="v" id="szStop" style="color:var(--red)">₹1,372</div></div>
+        <div class="lvl"><div class="k">R : R</div><div class="v" id="szRR" style="color:var(--gold)">1.9 : 1</div></div>
       </div>
-      <div class="size"><div class="k">Position size · capped to your capital</div><div class="v">₹5,00,000 capital → <b>83 shares</b> · max loss ₹4,980 (1.0%)</div></div>
+      <div class="size"><div class="k" id="szSizeK">Position size · capped to your capital</div><div class="v" id="szSize">₹5,00,000 capital → <b>83 shares</b> · max loss ₹4,980 (1.0%)</div></div>
+    </div>
+    <div class="sizer-ctrl">
+      <div class="hd">Size it for your account</div>
+      <div class="stks" id="szStocks"></div>
+      <div class="sld">
+        <div class="row"><span class="lab">Your capital</span><span class="val" id="szCapVal">₹5,00,000</span></div>
+        <input type="range" id="szCap" min="25000" max="5000000" step="25000" value="500000" aria-label="Your capital">
+      </div>
+      <div class="sld">
+        <div class="row"><span class="lab">Risk per trade</span><span class="val" id="szRiskVal">1.00% <small id="szRiskAmt">₹5,000</small></span></div>
+        <input type="range" id="szRisk" min="0.25" max="5" step="0.25" value="1" aria-label="Risk per trade percent">
+      </div>
+    </div>
     </div>
   </header>
 
@@ -381,6 +409,110 @@
       err.style.display='block';btn.textContent='Request access →';btn.disabled=false;
     }
   }
+</script>
+<script>
+(function(){
+  /* ===== Sanket hero sizer ==========================================
+     Set ENDPOINT to your backend route. It must return the JSON shown
+     in DEMO below (an array, or an object with a "stocks" array).
+     Cross-origin (sanketai.in -> app.sanketai.in) needs CORS + https on
+     that route. Until it answers, the fixed snapshot below is shown.
+     The snapshot is realistic and constant, never random.
+  =================================================================== */
+  var ENDPOINT = 'https://app.sanketai.in/api/hero-signals';   // live API
+  var POLL_MS  = 60000;                  // refresh cadence in ms; 0 disables polling
+
+  var DEMO = [
+    {symbol:'RELIANCE',  exchange:'NSE', style:'Swing', entry:1432, target:1548, stop:1372, score:83},
+    {symbol:'HDFCBANK',  exchange:'NSE', style:'Swing', entry:1685, target:1789, stop:1631, score:76},
+    {symbol:'TATAMOTORS',exchange:'NSE', style:'Swing', entry:695,  target:742,  stop:664,  score:64},
+    {symbol:'INFY',      exchange:'NSE', style:'Swing', entry:1560, target:1664, stop:1508, score:88}
+  ];
+
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var inr=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
+  var money=function(v){return '\u20b9'+inr.format(Math.max(0,Math.round(v)));};
+  var CIRC=301.6;
+  var $=function(id){return document.getElementById(id);};
+  if(!$('szSize'))return;
+
+  var data=DEMO.slice(), sel=0, st={cap:500000,risk:1}, polling=false;
+
+  var fill=$('szFill');
+  if(fill){fill.style.animation='none';fill.style.strokeDasharray=CIRC;fill.style.strokeDashoffset=CIRC;if(!reduce)fill.style.transition='stroke-dashoffset .6s cubic-bezier(.2,.7,.2,1)';}
+
+  function buildButtons(){
+    var box=$('szStocks'); box.innerHTML='';
+    data.forEach(function(sk,i){
+      var b=document.createElement('button');
+      b.className='stk';b.type='button';b.textContent=sk.symbol;b.setAttribute('aria-pressed',i===sel?'true':'false');
+      b.addEventListener('click',function(){sel=i;[].forEach.call(box.children,function(c,j){c.setAttribute('aria-pressed',j===i?'true':'false');});compute();});
+      box.appendChild(b);
+    });
+  }
+  function anim(el,to,fmt){
+    if(reduce||!el){if(el){el.textContent=fmt(to);el.dataset.v=to;}return;}
+    var from=parseFloat(el.dataset.v);if(isNaN(from))from=to;var t0=performance.now();el.dataset.v=to;
+    (function step(t){var k=Math.min(1,(t-t0)/320);var e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(step);else el.textContent=fmt(to);})(performance.now());
+  }
+  function verdict(sc){
+    if(sc>=80)return['Strong setup','Signals aligned and confirmed. Here is the plan, the exit, and the exact size for your capital.','High conviction'];
+    if(sc>=70)return['Proceed, sized right','Signals aligned. Here is the plan, the exit, and the exact size for your capital.','High conviction'];
+    if(sc>=55)return['Proceed with caution','Mixed signals. Playable, but keep the risk small and respect the stop.','Moderate'];
+    return['Stand aside','The edge is not here today. The honest call is to wait for a cleaner setup.','Low'];
+  }
+  function compute(){
+    if(sel>=data.length)sel=0;
+    var sk=data[sel];
+    var entry=+sk.entry, stop=+sk.stop, target=+sk.target;
+    var rps=Math.max(0.01,entry-stop);
+    var riskAmt=st.cap*st.risk/100;
+    var byRisk=Math.floor(riskAmt/rps), byCash=Math.floor(st.cap/entry);
+    var shares=Math.max(0,Math.min(byRisk,byCash));
+    var maxLoss=shares*rps, lossPct=st.cap?maxLoss/st.cap*100:0, rr=(target-entry)/rps;
+    var v=verdict(+sk.score);
+    $('szSym').textContent=sk.symbol+' \u00b7 '+(sk.exchange||'NSE')+' \u00b7 '+(sk.style||'Swing');
+    $('szBadge').textContent=v[2];
+    $('szScore').textContent=sk.score;
+    $('szVerdict').textContent=v[0];
+    $('szVerdictP').textContent=v[1];
+    if(fill)fill.style.strokeDashoffset=(CIRC*(1-(+sk.score)/100)).toFixed(1);
+    $('szCapVal').textContent=money(st.cap);
+    $('szRiskVal').firstChild.nodeValue=st.risk.toFixed(2)+'% ';
+    $('szRiskAmt').textContent=money(riskAmt);
+    anim($('szEntry'),entry,money);
+    anim($('szTarget'),target,money);
+    anim($('szStop'),stop,money);
+    $('szRR').textContent=rr.toFixed(1)+' : 1';
+    $('szSizeK').textContent='Position size \u00b7 '+(byRisk>byCash?'capped by available cash':'capped to your capital');
+    $('szSize').innerHTML=money(st.cap)+' capital \u2192 <b>'+inr.format(shares)+' shares</b> \u00b7 max loss '+money(maxLoss)+' ('+lossPct.toFixed(1)+'%)';
+  }
+  function applyData(arr){
+    if(!arr||!arr.length)return false;
+    var prev=data[sel]?data[sel].symbol:null;
+    data=arr;
+    var idx=-1; for(var i=0;i<data.length;i++){if(data[i].symbol===prev){idx=i;break;}}
+    sel=idx>=0?idx:0;
+    buildButtons(); compute();
+    return true;
+  }
+  function load(){
+    if(!ENDPOINT){return;}
+    fetch(ENDPOINT,{headers:{'Accept':'application/json'}})
+      .then(function(r){if(!r.ok)throw 0;return r.json();})
+      .then(function(j){
+        var arr=Array.isArray(j)?j:(j&&j.stocks);
+        if(applyData(arr)&&POLL_MS>0&&!polling){polling=true;setInterval(load,POLL_MS);}
+      })
+      .catch(function(){ /* route not ready: keep the snapshot, do not poll */ });
+  }
+
+  $('szCap').addEventListener('input',function(e){st.cap=+e.target.value;compute();});
+  $('szRisk').addEventListener('input',function(e){st.risk=+e.target.value;compute();});
+
+  buildButtons(); compute();   // render immediately so the card is never blank
+  load();                      // then try live data
+})();
 </script>
 </body>
 </html>
