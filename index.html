@@ -124,6 +124,33 @@
   .foot-links a:hover{color:var(--paper)}
   .foot-meta{font-family:var(--mono);font-size:11px;color:var(--ash-dim);letter-spacing:.12em}
 
+  /* ── request-access modal ── */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;
+    background:rgba(5,6,8,.8);backdrop-filter:blur(8px)}
+  .modal.open{display:flex}
+  .modal-card{background:linear-gradient(180deg,#13151b,#0c0d11);border:1px solid var(--line);border-radius:20px;
+    padding:34px 32px;max-width:430px;width:100%;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+  .modal-card .x{position:absolute;top:14px;right:18px;background:none;border:0;color:var(--ash);font-size:24px;cursor:pointer;line-height:1}
+  .modal-card .x:hover{color:var(--paper)}
+  .modal-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .modal-card h3{font-family:var(--serif);font-weight:500;font-size:26px;margin:8px 0 6px;letter-spacing:-.01em}
+  .modal-card .sub{color:var(--ash);font-size:14px;line-height:1.5;margin-bottom:22px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:6px}
+  .field input{width:100%;background:#0a0b0e;border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+    color:var(--paper);font-family:var(--ui);font-size:15px;outline:none;transition:border-color .2s}
+  .field input:focus{border-color:var(--gold)}
+  .modal-card .submit{width:100%;margin-top:8px;font-family:var(--ui);font-weight:600;font-size:15px;color:var(--void);
+    background:linear-gradient(var(--gold-hot),var(--gold));border:0;border-radius:999px;padding:14px;cursor:pointer;
+    box-shadow:0 8px 26px rgba(201,162,75,.32);transition:transform .2s}
+  .modal-card .submit:hover{transform:translateY(-1px)}
+  .modal-card .submit:disabled{opacity:.6;cursor:default;transform:none}
+  .jf-err{display:none;color:var(--red);font-size:13px;margin-top:10px;font-family:var(--mono);line-height:1.45}
+  .jf-done{display:none;text-align:center;padding:8px 0}
+  .jf-done .tick{font-size:38px;color:var(--green)}
+  .privacy{font-family:var(--mono);font-size:10.5px;color:var(--ash-dim);margin-top:14px;line-height:1.5;text-align:center}
+  .privacy a{color:var(--gold)}
+
   @media(max-width:600px){
     .coin{width:160px;height:160px}
     .hero-copy{padding:26px 20px 44px}
@@ -143,7 +170,7 @@
     <div class="nav-links">
       <a href="about.html">About</a>
       <a href="disclosures.html">Disclosures</a>
-      <a class="nav-cta" href="mailto:hello@sanketai.in?subject=Request%20access">Request access →</a>
+      <a class="nav-cta" href="#" onclick="openJoin();return false">Request access →</a>
     </div>
   </div>
 </nav>
@@ -212,7 +239,7 @@
     <div class="tile"><div class="lab">The size</div><div class="v g">Sized</div><div class="vd" style="color:var(--green)">how much to risk</div></div>
     <div class="tile"><div class="lab">The line</div><div class="v r">Set</div><div class="vd" style="color:var(--red)">your exit, up front</div></div>
   </div>
-  <button class="cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">Step inside ↑</button>
+  <button class="cta" onclick="openJoin()">Request access →</button>
   <p class="fine">Live in beta · Sanket helps you manage risk — it doesn't erase it · markets carry risk · no guarantee of returns.</p>
 </section>
 
@@ -228,6 +255,59 @@
     <div class="foot-meta">SANKET · live in beta · © 2026</div>
   </div>
 </footer>
+
+<!-- REQUEST ACCESS MODAL -->
+<div class="modal" id="joinModal" role="dialog" aria-modal="true" aria-label="Request access">
+  <div class="modal-card">
+    <button class="x" onclick="closeJoin()" aria-label="Close">&times;</button>
+    <div id="joinForm">
+      <div class="modal-eyebrow">Beta · first 50</div>
+      <h3>Request access</h3>
+      <p class="sub">Leave your details and we'll reach out as we open spots.</p>
+      <div class="field"><label for="jf-name">Name</label><input id="jf-name" type="text" autocomplete="name" placeholder="Your name"></div>
+      <div class="field"><label for="jf-phone">Phone</label><input id="jf-phone" type="tel" autocomplete="tel" placeholder="+91 98765 43210"></div>
+      <div class="field"><label for="jf-email">Email</label><input id="jf-email" type="email" autocomplete="email" placeholder="you@email.com"></div>
+      <button class="submit" id="jf-submit" onclick="submitJoin()">Request access &rarr;</button>
+      <div class="jf-err" id="jf-err"></div>
+      <p class="privacy">We'll only use this to contact you about Sanket. See <a href="disclosures.html">Disclosures</a>.</p>
+    </div>
+    <div class="jf-done" id="joinDone">
+      <div class="tick">&check;</div>
+      <h3>You're on the list.</h3>
+      <p class="sub">We'll be in touch soon. Thanks for your interest in Sanket.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  var SB_URL='https://ozygkqdvglllvluvqevf.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96eWdrcWR2Z2xsbHZsdXZxZXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk1MzEsImV4cCI6MjA5NDY2NTUzMX0.ukLijBc2Sk4BxKgzxtUqB6f9Zu4iznlfkMV-PBKZK8w';
+  function openJoin(){document.getElementById('joinModal').classList.add('open');document.body.style.overflow='hidden';}
+  function closeJoin(){document.getElementById('joinModal').classList.remove('open');document.body.style.overflow='';}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeJoin();});
+  document.getElementById('joinModal').addEventListener('click',function(e){if(e.target===this)closeJoin();});
+  async function submitJoin(){
+    var name=document.getElementById('jf-name').value.trim();
+    var phone=document.getElementById('jf-phone').value.trim();
+    var email=document.getElementById('jf-email').value.trim();
+    var err=document.getElementById('jf-err'); err.style.display='none';
+    if(!name||!phone||!email){err.textContent='Please enter your name, phone, and email.';err.style.display='block';return;}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent='Please enter a valid email address.';err.style.display='block';return;}
+    var btn=document.getElementById('jf-submit');btn.textContent='Sending…';btn.disabled=true;
+    try{
+      var r=await fetch(SB_URL+'/rest/v1/beta_signups',{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({name:name,email:email,phone:phone})
+      });
+      if(r.ok){document.getElementById('joinForm').style.display='none';document.getElementById('joinDone').style.display='block';}
+      else{throw new Error('status '+r.status);}
+    }catch(e){
+      err.textContent='Something went wrong. Please email hello@sanketai.in and we will add you.';
+      err.style.display='block';btn.textContent='Request access →';btn.disabled=false;
+    }
+  }
+</script>
 
 <script>
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
