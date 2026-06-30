@@ -18,7 +18,7 @@
     --serif:'Fraunces',Georgia,serif; --ui:'Hanken Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
   body{background:var(--void);color:var(--paper);font-family:var(--ui);overflow-x:hidden;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
@@ -684,6 +684,23 @@ addEventListener('resize',size);
 /* ── reveal on scroll ── */
 const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.18});
 document.querySelectorAll('.reveal').forEach(b=>io.observe(b));
+
+/* ── reliable deep-link scrolling: fixes /#record (and other anchors) landing on the hero at load ── */
+function jumpToHash(){
+  if(!location.hash) return;
+  var el; try{ el=document.querySelector(location.hash); }catch(e){ return; }
+  if(!el) return;
+  var nav=document.querySelector('.site-nav');
+  var offset=(nav?nav.offsetHeight:0)+16;
+  var root=document.documentElement, prev=root.style.scrollBehavior;
+  root.style.scrollBehavior='auto';
+  window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - offset));
+  root.style.scrollBehavior=prev;
+}
+window.addEventListener('load', function(){
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ setTimeout(jumpToHash,50); }); }
+  setTimeout(jumpToHash, 250); /* fallback for slow paints / no Font Loading API */
+});
 </script>
 </body>
 </html>
